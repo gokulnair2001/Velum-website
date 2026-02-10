@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velum — See What Your Data Won't Tell You</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #0a0a0a;
+            --white: #fafafa;
+            --orange: #ff6b35;
+            --orange-dim: rgba(255, 107, 53, 0.15);
+            --gray-1: #1a1a1a;
+            --gray-2: #2a2a2a;
+            --gray-3: #4a4a4a;
+            --gray-4: #8a8a8a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        ::selection {
+            background: var(--orange);
+            color: var(--black);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--black);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray-3);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--orange);
+        }
+
+        /* Navigation - Minimal */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            mix-blend-mode: difference;
+        }
+
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.25rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: var(--white);
+        }
+
+        .nav-cta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--white);
+            color: var(--white);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .nav-cta:hover {
+            background: var(--white);
+            color: var(--black);
+        }
+
+        /* Hero - Editorial Style */
+        .hero {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            position: relative;
+        }
+
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 8rem 4rem 4rem;
+            position: relative;
+        }
+
+        .hero-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--orange);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .hero-label::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--orange);
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 7vw, 6rem);
+            font-weight: 700;
+            line-height: 0.95;
+            letter-spacing: -0.04em;
+            margin-bottom: 2rem;
+        }
+
+        .hero-title .outline {
+            -webkit-text-stroke: 1px var(--white);
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            color: var(--gray-4);
+            max-width: 400px;
+            margin-bottom: 3rem;
+            line-height: 1.7;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn-primary {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            padding: 1rem 2rem;
+            background: var(--orange);
+            border: none;
+            color: var(--black);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .btn-primary:hover {
+            transform: translateX(8px);
+            box-shadow: -8px 8px 0 var(--white);
+        }
+
+        .btn-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--gray-4);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s;
+        }
+
+        .btn-text:hover {
+            color: var(--white);
+        }
+
+        /* Right side - Terminal visualization */
+        .hero-right {
+            background: var(--gray-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terminal {
+            width: 90%;
+            max-width: 500px;
+            background: var(--black);
+            border: 1px solid var(--gray-2);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            position: relative;
+        }
+
+        .terminal-header {
+            padding: 0.75rem 1rem;
+            background: var(--gray-1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--gray-2);
+        }
+
+        .terminal-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot.red { background: #ff5f57; }
+        .terminal-dot.yellow { background: #febc2e; }
+        .terminal-dot.green { background: #28c840; }
+
+        .terminal-title {
+            margin-left: auto;
+            color: var(--gray-4);
+            font-size: 0.7rem;
+        }
+
+        .terminal-body {
+            padding: 1.5rem;
+            height: 400px;
+            overflow: hidden;
+        }
+
+        .terminal-line {
+            margin-bottom: 0.5rem;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: terminalFade 0.3s ease forwards;
+        }
+
+        .terminal-line .prompt {
+            color: var(--orange);
+        }
+
+        .terminal-line .cmd {
+            color: var(--white);
+        }
+
+        .terminal-line .output {
+            color: var(--gray-4);
+            padding-left: 1rem;
+        }
+
+        .terminal-line .success {
+            color: #28c840;
+        }
+
+        .terminal-line .warn {
+            color: #febc2e;
+        }
+
+        .terminal-line .error {
+            color: #ff5f57;
+        }
+
+        @keyframes terminalFade {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .terminal-line:nth-child(1) { animation-delay: 0.5s; }
+        .terminal-line:nth-child(2) { animation-delay: 1s; }
+        .terminal-line:nth-child(3) { animation-delay: 1.3s; }
+        .terminal-line:nth-child(4) { animation-delay: 1.6s; }
+        .terminal-line:nth-child(5) { animation-delay: 2s; }
+        .terminal-line:nth-child(6) { animation-delay: 2.3s; }
+        .terminal-line:nth-child(7) { animation-delay: 2.6s; }
+        .terminal-line:nth-child(8) { animation-delay: 3s; }
+        .terminal-line:nth-child(9) { animation-delay: 3.3s; }
+        .terminal-line:nth-child(10) { animation-delay: 3.6s; }
+        .terminal-line:nth-child(11) { animation-delay: 4s; }
+        .terminal-line:nth-child(12) { animation-delay: 4.3s; }
+        .terminal-line:nth-child(13) { animation-delay: 4.6s; }
+
+        /* Floating data stream */
+        .data-stream {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            pointer-events: none;
+            opacity: 0.15;
+        }
+
+        .data-column {
+            position: absolute;
+            top: -100%;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            line-height: 1.2;
+            color: var(--orange);
+            animation: dataFall 20s linear infinite;
+            white-space: pre;
+        }
+
+        @keyframes dataFall {
+            to { transform: translateY(200vh); }
+        }
+
+        /* Metrics Strip */
+        .metrics-strip {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-top: 1px solid var(--gray-2);
+            border-bottom: 1px solid var(--gray-2);
+        }
+
+        .metric-item {
+            padding: 3rem 4rem;
+            border-right: 1px solid var(--gray-2);
+            position: relative;
+            overflow: hidden;
+            transition: background 0.3s;
+        }
+
+        .metric-item:last-child {
+            border-right: none;
+        }
+
+        .metric-item:hover {
+            background: var(--gray-1);
+        }
+
+        .metric-number {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-number .unit {
+            font-size: 1.5rem;
+            color: var(--orange);
+        }
+
+        .metric-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--gray-4);
+        }
+
+        /* Problem/Solution - Asymmetric Grid */
+        .contrast-section {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            min-height: 100vh;
+        }
+
+        .contrast-left {
+            padding: 8rem 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .contrast-right {
+            background: var(--orange);
+            color: var(--black);
+            padding: 8rem 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .section-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--gray-4);
+            margin-bottom: 2rem;
+        }
+
+        .contrast-right .section-number {
+            color: rgba(0,0,0,0.4);
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+        }
+
+        .contrast-list {
+            list-style: none;
+        }
+
+        .contrast-list li {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--gray-2);
+            font-size: 1rem;
+            color: var(--gray-4);
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .contrast-right .contrast-list li {
+            border-color: rgba(0,0,0,0.15);
+            color: rgba(0,0,0,0.7);
+        }
+
+        .contrast-list li::before {
+            content: '×';
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--gray-3);
+            flex-shrink: 0;
+        }
+
+        .contrast-right .contrast-list li::before {
+            content: '→';
+            color: var(--black);
+        }
+
+        /* Patterns - Scrollable Cards */
+        .patterns-section {
+            padding: 8rem 4rem;
+            background: var(--gray-1);
+        }
+
+        .patterns-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 4rem;
+        }
+
+        .patterns-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            max-width: 500px;
+        }
+
+        .patterns-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--gray-2);
+            border: 1px solid var(--gray-2);
+        }
+
+        .pattern-card {
+            background: var(--black);
+            padding: 2.5rem;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .pattern-card:hover {
+            background: var(--gray-1);
+        }
+
+        .pattern-card:hover .pattern-icon {
+            transform: scale(1.1);
+            color: var(--orange);
+        }
+
+        .pattern-icon {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .pattern-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .pattern-desc {
+            font-size: 0.85rem;
+            color: var(--gray-4);
+            line-height: 1.6;
+        }
+
+        .pattern-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 0.25rem 0.5rem;
+            background: var(--orange-dim);
+            color: var(--orange);
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+        }
+
+        /* How it Works - Horizontal Scroll */
+        .pipeline-section {
+            padding: 8rem 4rem;
+            overflow: hidden;
+        }
+
+        .pipeline-header {
+            margin-bottom: 4rem;
+        }
+
+        .pipeline-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+        }
+
+        .pipeline-subtitle {
+            color: var(--gray-4);
+            max-width: 500px;
+        }
+
+        .pipeline-track {
+            display: flex;
+            gap: 0;
+            position: relative;
+        }
+
+        .pipeline-step {
+            flex: 0 0 280px;
+            padding: 2rem;
+            border: 1px solid var(--gray-2);
+            margin-right: -1px;
+            position: relative;
+        }
+
+        .pipeline-step::after {
+            content: '→';
+            position: absolute;
+            right: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--orange);
+            background: var(--black);
+            padding: 0.5rem;
+            z-index: 1;
+        }
+
+        .pipeline-step:last-child::after {
+            display: none;
+        }
+
+        .step-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--orange);
+            margin-bottom: 1rem;
+        }
+
+        .step-icon {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-desc {
+            font-size: 0.8rem;
+            color: var(--gray-4);
+            line-height: 1.6;
+        }
+
+        /* Logo Carousel - Used By Section */
+        .logos-section {
+            padding: 6rem 4rem;
+            background: var(--black);
+            color: var(--white);
+            overflow: hidden;
+        }
+
+        /* Benefits Section */
+        .benefits-section {
+            padding: 10rem 4rem;
+            background: var(--white);
+            color: var(--black);
+        }
+
+        .benefits-header {
+            margin-bottom: 5rem;
+            max-width: 600px;
+        }
+
+        .benefits-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--orange);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.5rem;
+        }
+
+        .benefits-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            color: var(--black);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem 4rem;
+        }
+
+        .benefit-card {
+            padding: 2.5rem 0;
+            border-top: 2px solid var(--black);
+        }
+
+        .benefit-icon {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .benefit-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            color: var(--black);
+        }
+
+        .benefit-desc {
+            font-size: 0.95rem;
+            color: var(--gray-3);
+            line-height: 1.7;
+        }
+
+        .benefit-stat {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .benefit-stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--orange);
+        }
+
+        .benefit-stat-label {
+            font-size: 0.8rem;
+            color: var(--gray-3);
+            margin-top: 0.25rem;
+        }
+
+        .logos-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .logos-title {
+            font-size: clamp(1.2rem, 2vw, 1.5rem);
+            font-weight: 400;
+            color: var(--gray-4);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .logos-track-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .logos-track-wrapper::before,
+        .logos-track-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 150px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .logos-track-wrapper::before {
+            left: 0;
+            background: linear-gradient(to right, var(--black), transparent);
+        }
+
+        .logos-track-wrapper::after {
+            right: 0;
+            background: linear-gradient(to left, var(--black), transparent);
+        }
+
+        .logos-track {
+            display: flex;
+            align-items: center;
+            gap: 6rem;
+            animation: scroll-logos 20s linear infinite;
+            width: max-content;
+        }
+
+        .logos-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll-logos {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .logo-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 60px;
+            min-width: 180px;
+            flex-shrink: 0;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo-item:hover {
+            opacity: 1;
+        }
+
+        .logo-item svg {
+            height: 40px;
+            width: auto;
+            fill: var(--white);
+            color: var(--white);
+        }
+
+        .logo-item img {
+            height: 40px;
+            width: auto;
+            filter: grayscale(100%) brightness(0) invert(1);
+            transition: filter 0.3s ease;
+        }
+
+        .logo-item:hover img {
+            filter: grayscale(0%) brightness(0) invert(1);
+        }
+
+        .logo-text {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--white);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 12rem 4rem;
+            background: var(--black);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: 'VELUM';
+            position: absolute;
+            font-size: 25vw;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            color: var(--gray-1);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--orange);
+            margin-bottom: 2rem;
+        }
+
+        .cta-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-desc {
+            color: var(--gray-4);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .cta-form {
+            display: flex;
+            gap: 0.5rem;
+            max-width: 450px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .cta-form input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            background: var(--gray-1);
+            border: 1px solid var(--gray-2);
+            color: var(--white);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .cta-form input:focus {
+            border-color: var(--orange);
+        }
+
+        .cta-form input::placeholder {
+            color: var(--gray-4);
+        }
+
+        .cta-form button {
+            padding: 1rem 2rem;
+            background: var(--orange);
+            border: none;
+            color: var(--black);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .cta-form button:hover {
+            background: var(--white);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.25rem 3rem;
+            background: var(--orange);
+            border: none;
+            color: var(--black);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-button:hover {
+            background: var(--white);
+        }
+
+        .cta-note {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gray-4);
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem;
+            border-top: 1px solid var(--gray-2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-left {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .footer-logo {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-copy {
+            font-size: 0.7rem;
+            color: var(--gray-4);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--gray-4);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--white);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-right {
+                display: none;
+            }
+
+            .contrast-section {
+                grid-template-columns: 1fr;
+            }
+
+            .contrast-right {
+                order: -1;
+            }
+
+            .patterns-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics-strip {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .metric-item:nth-child(2) {
+                border-right: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem 2rem;
+            }
+
+            .hero-left {
+                padding: 6rem 2rem 4rem;
+            }
+
+            .metrics-strip {
+                grid-template-columns: 1fr;
+            }
+
+            .metric-item {
+                border-right: none;
+                padding: 2rem;
+            }
+
+            .contrast-left,
+            .contrast-right {
+                padding: 4rem 2rem;
+            }
+
+            .patterns-section,
+            .pipeline-section {
+                padding: 4rem 2rem;
+            }
+
+            .patterns-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .logos-section {
+                padding: 4rem 1rem;
+            }
+
+            .benefits-section {
+                padding: 5rem 2rem;
+            }
+
+            .benefits-grid {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .benefit-card {
+                padding: 2rem 0;
+            }
+
+            .logos-track {
+                gap: 4rem;
+            }
+
+            .logo-item {
+                min-width: 140px;
+            }
+
+            .logo-text {
+                font-size: 1.5rem;
+            }
+
+            .cta-section {
+                padding: 6rem 2rem;
+            }
+
+            .cta-form {
+                flex-direction: column;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 2rem;
+                text-align: center;
+                padding: 2rem;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        /* Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Cursor effect */
+        .cursor-glow {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor-glow" id="cursor"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">velum_</div>
+        <a href="https://app.youform.com/forms/qxrxlzlp" target="_blank" class="nav-cta">Request Access →</a>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-left">
+            <div class="hero-label">Behavioral Intelligence Layer</div>
+            <h1 class="hero-title">
+                Your data<br>
+                shows <span class="outline">what</span>.<br>
+                We show <span style="color: var(--orange);">why</span>.
+            </h1>
+            <p class="hero-desc">
+                Velum detects the behavioral patterns your dashboards miss like retry storms, silent abandonments, and hesitation loops - then turns them into revenue.
+            </p>
+            <div class="hero-actions">
+                <a href="https://app.youform.com/forms/qxrxlzlp" target="_blank" class="btn-primary">Get Early Access</a>
+                <a href="#how" class="btn-text">
+                    <span>See how it works</span>
+                    <span>↓</span>
+                </a>
+            </div>
+        </div>
+        <div class="hero-right">
+            <div class="data-stream">
+                <div class="data-column" style="left: 5%; animation-delay: 0s;">{"event":"click","target":"btn_pay"}<br>{"event":"scroll","depth":450}<br>{"event":"click","target":"btn_pay"}<br>{"event":"error","code":500}<br>{"event":"idle","ms":45000}</div>
+                <div class="data-column" style="left: 25%; animation-delay: 3s;">{"event":"page_view","path":"/checkout"}<br>{"event":"focus","field":"card"}<br>{"event":"blur","field":"card"}<br>{"event":"exit","type":"abandon"}</div>
+                <div class="data-column" style="left: 45%; animation-delay: 6s;">{"event":"click","target":"btn_back"}<br>{"event":"click","target":"btn_next"}<br>{"event":"click","target":"btn_back"}<br>{"event":"rage_click","count":5}</div>
+                <div class="data-column" style="left: 65%; animation-delay: 9s;">{"event":"hesitate","duration":32000}<br>{"event":"scroll_up"}<br>{"event":"scroll_down"}<br>{"event":"abandon","silent":true}</div>
+                <div class="data-column" style="left: 85%; animation-delay: 12s;">{"pattern":"retry_storm"}<br>{"confidence":0.94}<br>{"impact":"high"}<br>{"users":847}</div>
+            </div>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot red"></span>
+                    <span class="terminal-dot yellow"></span>
+                    <span class="terminal-dot green"></span>
+                    <span class="terminal-title">velum analyze</span>
+                </div>
+                <div class="terminal-body">
+                    <div class="terminal-line"><span class="prompt">$</span> <span class="cmd">velum analyze --flow checkout</span></div>
+                    <div class="terminal-line"><span class="output">Processing 12,847 events...</span></div>
+                    <div class="terminal-line"><span class="output">Reconstructing 2,341 sessions...</span></div>
+                    <div class="terminal-line"><span class="output">Running behavioral analysis...</span></div>
+                    <div class="terminal-line"><span class="output"> </span></div>
+                    <div class="terminal-line"><span class="error">▲ CRITICAL: Retry Storm Detected</span></div>
+                    <div class="terminal-line"><span class="output">  └─ 847 users clicking pay 3+ times</span></div>
+                    <div class="terminal-line"><span class="output">  └─ Payment button latency: 2.3s</span></div>
+                    <div class="terminal-line"><span class="output"> </span></div>
+                    <div class="terminal-line"><span class="warn">▲ WARNING: Hesitation Pattern</span></div>
+                    <div class="terminal-line"><span class="output">  └─ 23% pause 30s+ at pricing reveal</span></div>
+                    <div class="terminal-line"><span class="output"> </span></div>
+                    <div class="terminal-line"><span class="success">✓ AI Hypothesis Generated</span></div>
+                    <div class="terminal-line"><span class="output">  "Hidden fee causing checkout anxiety"</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Metrics Strip -->
+    <div class="metrics-strip">
+        <div class="metric-item reveal">
+            <div class="metric-number">40<span class="unit">hrs</span></div>
+            <div class="metric-label">Developer Hours Saved / Month</div>
+        </div>
+        <div class="metric-item reveal">
+            <div class="metric-number">73<span class="unit">%</span></div>
+            <div class="metric-label">Faster Root Cause Discovery</div>
+        </div>
+        <div class="metric-item reveal">
+            <div class="metric-number">&lt;200<span class="unit">ms</span></div>
+            <div class="metric-label">Real-time Latency</div>
+        </div>
+        <div class="metric-item reveal">
+            <div class="metric-number">15<span class="unit">×</span></div>
+            <div class="metric-label">More Patterns Than Dashboards</div>
+        </div>
+    </div>
+
+    <!-- Contrast Section -->
+    <section class="contrast-section">
+        <div class="contrast-left reveal">
+            <div class="section-number">01 — The Problem</div>
+            <h2 class="section-title">Traditional analytics<br>tell you what happened.</h2>
+            <ul class="contrast-list">
+                <li>500 button clicks on checkout</li>
+                <li>12% cart abandonment rate</li>
+                <li>3.2s average page load</li>
+                <li>Revenue dropped 8% this week</li>
+                <li>Teams guessing at root causes</li>
+            </ul>
+        </div>
+        <div class="contrast-right reveal">
+            <div class="section-number">02 — The Solution</div>
+            <h2 class="section-title">Velum tells you<br>why it matters.</h2>
+            <ul class="contrast-list">
+                <li>Retry storm: Users clicking pay 3x in 2s</li>
+                <li>Silent abandonment after 45s hesitation</li>
+                <li>Confusion loop in payment flow</li>
+                <li>AI hypothesis: "Hidden fee anxiety"</li>
+                <li>Actionable fix: Surface fees earlier</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Patterns Section -->
+    <section class="patterns-section">
+        <div class="patterns-header reveal">
+            <h2 class="patterns-title">Patterns your dashboard will never show you.</h2>
+            <div class="section-number">6 Behavioral Signals</div>
+        </div>
+        <div class="patterns-grid">
+            <div class="pattern-card reveal">
+                <span class="pattern-tag">Critical</span>
+                <div class="pattern-icon">🔥</div>
+                <h3 class="pattern-name">Retry Storm</h3>
+                <p class="pattern-desc">Users frantically clicking the same button multiple times—a sign of latency or failed feedback.</p>
+            </div>
+            <div class="pattern-card reveal">
+                <span class="pattern-tag">Critical</span>
+                <div class="pattern-icon">😶</div>
+                <h3 class="pattern-name">Silent Abandonment</h3>
+                <p class="pattern-desc">Users leave without any interaction after viewing—no clicks, no scrolls, just gone.</p>
+            </div>
+            <div class="pattern-card reveal">
+                <span class="pattern-tag">Warning</span>
+                <div class="pattern-icon">🔄</div>
+                <h3 class="pattern-name">Confusion Loop</h3>
+                <p class="pattern-desc">Repeated back-and-forth navigation indicating uncertainty or poor information architecture.</p>
+            </div>
+            <div class="pattern-card reveal">
+                <span class="pattern-tag">Warning</span>
+                <div class="pattern-icon">⏸️</div>
+                <h3 class="pattern-name">Hesitation</h3>
+                <p class="pattern-desc">Unusual pauses before critical actions reveal anxiety, doubt, or hidden friction.</p>
+            </div>
+            <div class="pattern-card reveal">
+                <span class="pattern-tag">Signal</span>
+                <div class="pattern-icon">🚪</div>
+                <h3 class="pattern-name">Early Dropoff</h3>
+                <p class="pattern-desc">Users abandoning flows earlier than baseline—something changed or broke.</p>
+            </div>
+            <div class="pattern-card reveal">
+                <span class="pattern-tag">Signal</span>
+                <div class="pattern-icon">⏭️</div>
+                <h3 class="pattern-name">Bypass Behavior</h3>
+                <p class="pattern-desc">Users skipping expected steps—either smart shortcuts or broken flows.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pipeline Section -->
+    <section class="pipeline-section" id="how">
+        <div class="pipeline-header reveal">
+            <h2 class="pipeline-title">Six layers of behavioral intelligence.</h2>
+            <p class="pipeline-subtitle">From raw events to actionable insights in under 200 milliseconds.</p>
+        </div>
+        <div class="pipeline-track">
+            <div class="pipeline-step reveal">
+                <div class="step-number">01</div>
+                <div class="step-icon">📥</div>
+                <h3 class="step-title">Event Ingestion</h3>
+                <p class="step-desc">Raw analytics events from any source—Segment, Amplitude, or custom.</p>
+            </div>
+            <div class="pipeline-step reveal">
+                <div class="step-number">02</div>
+                <div class="step-icon">🔀</div>
+                <h3 class="step-title">Session Flow</h3>
+                <p class="step-desc">Reconstruct user journeys from scattered events into coherent flows.</p>
+            </div>
+            <div class="pipeline-step reveal">
+                <div class="step-number">03</div>
+                <div class="step-icon">🎯</div>
+                <h3 class="step-title">Behavior Mapping</h3>
+                <p class="step-desc">Classify each action—explore, attempt, retry, succeed, abandon.</p>
+            </div>
+            <div class="pipeline-step reveal">
+                <div class="step-number">04</div>
+                <div class="step-icon">🔍</div>
+                <h3 class="step-title">Pattern Detection</h3>
+                <p class="step-desc">Match against 6+ behavioral patterns with confidence scoring.</p>
+            </div>
+            <div class="pipeline-step reveal">
+                <div class="step-number">05</div>
+                <div class="step-icon">📈</div>
+                <h3 class="step-title">Baseline Compare</h3>
+                <p class="step-desc">Detect deviations from normal behavior. Surface what changed.</p>
+            </div>
+            <div class="pipeline-step reveal">
+                <div class="step-number">06</div>
+                <div class="step-icon">🧠</div>
+                <h3 class="step-title">AI Hypothesis</h3>
+                <p class="step-desc">Generate actionable explanations for detected anomalies.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits-section">
+        <div class="benefits-header reveal">
+            <p class="benefits-label">Why Velum</p>
+            <h2 class="benefits-title">Turn user behavior into competitive advantage.</h2>
+        </div>
+        <div class="benefits-grid">
+            <div class="benefit-card reveal">
+                <div class="benefit-icon">⚡</div>
+                <h3 class="benefit-title">Ship Faster</h3>
+                <p class="benefit-desc">Debug with behavioral context, not just logs. Know exactly what users were trying to do when something broke.</p>
+                <div class="benefit-stat">
+                    <div class="benefit-stat-value">40+ hrs</div>
+                    <div class="benefit-stat-label">saved per developer monthly</div>
+                </div>
+            </div>
+            <div class="benefit-card reveal">
+                <div class="benefit-icon">📈</div>
+                <h3 class="benefit-title">Increase Conversion</h3>
+                <p class="benefit-desc">Identify friction in checkout, signup, and onboarding flows. See where users hesitate, retry, or abandon.</p>
+                <div class="benefit-stat">
+                    <div class="benefit-stat-value">15-30%</div>
+                    <div class="benefit-stat-label">typical conversion lift</div>
+                </div>
+            </div>
+            <div class="benefit-card reveal">
+                <div class="benefit-icon">🎯</div>
+                <h3 class="benefit-title">Reduce Support Load</h3>
+                <p class="benefit-desc">Catch UX issues before users report them. Fix problems proactively instead of reactively.</p>
+                <div class="benefit-stat">
+                    <div class="benefit-stat-value">60%</div>
+                    <div class="benefit-stat-label">fewer UX-related tickets</div>
+                </div>
+            </div>
+            <div class="benefit-card reveal">
+                <div class="benefit-icon">🔄</div>
+                <h3 class="benefit-title">Retain Users</h3>
+                <p class="benefit-desc">Detect frustration patterns before they lead to churn. Intervene at the right moment with the right message.</p>
+                <div class="benefit-stat">
+                    <div class="benefit-stat-value">2.3x</div>
+                    <div class="benefit-stat-label">faster churn detection</div>
+                </div>
+            </div>
+            <div class="benefit-card reveal">
+                <div class="benefit-icon">📊</div>
+                <h3 class="benefit-title">Data-Driven Decisions</h3>
+                <p class="benefit-desc">Ground product decisions in real user behavior. Stop guessing, start knowing.</p>
+                <div class="benefit-stat">
+                    <div class="benefit-stat-value">100%</div>
+                    <div class="benefit-stat-label">of sessions analyzed</div>
+                </div>
+            </div>
+            <div class="benefit-card reveal">
+                <div class="benefit-icon">🔗</div>
+                <h3 class="benefit-title">Unified View</h3>
+                <p class="benefit-desc">One platform for product, engineering, and support. Everyone sees the same behavioral truth.</p>
+                <div class="benefit-stat">
+                    <div class="benefit-stat-value">1</div>
+                    <div class="benefit-stat-label">source of truth</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Used By Section -->
+    <section class="logos-section">
+        <div class="logos-header reveal">
+            <p class="logos-title">Velum is used by engineers from</p>
+        </div>
+        <div class="logos-track-wrapper">
+            <div class="logos-track">
+                <!-- First set of logos -->
+                <div class="logo-item">
+                    <svg viewBox="0 0 100 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <text x="50" y="28" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="24" font-weight="700" fill="currentColor">Lowe's</text>
+                    </svg>
+                </div>
+                <div class="logo-item">
+                    <svg viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <text x="60" y="28" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="24" font-weight="700" fill="currentColor">Google</text>
+                    </svg>
+                </div>
+                <div class="logo-item">
+                    <svg viewBox="0 0 140 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <text x="70" y="28" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="24" font-weight="700" fill="currentColor">Motive</text>
+                    </svg>
+                </div>
+                <div class="logo-item">
+                    <svg viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <text x="80" y="28" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="24" font-weight="700" fill="currentColor">Powerplay</text>
+                    </svg>
+                </div>
+                <div class="logo-item">
+                    <svg viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <text x="60" y="28" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="24" font-weight="700" fill="currentColor">Swiggy</text>
+                    </svg>
+                </div>
+                <!-- Duplicate set for seamless loop -->
+                <div class="logo-item">
+                    <svg viewBox="0 0 100 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <text x="50" y="28" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="24" font-weight="700" fill="currentColor">Lowe's</text>
+                    </svg>
+                </div>
+                <div class="logo-item">
+                    <svg viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <text x="60" y="28" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="24" font-weight="700" fill="currentColor">Google</text>
+                    </svg>
+                </div>
+                <div class="logo-item">
+                    <svg viewBox="0 0 140 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <text x="70" y="28" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="24" font-weight="700" fill="currentColor">Motive</text>
+                    </svg>
+                </div>
+                <div class="logo-item">
+                    <svg viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <text x="80" y="28" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="24" font-weight="700" fill="currentColor">Powerplay</text>
+                    </svg>
+                </div>
+                <div class="logo-item">
+                    <svg viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <text x="60" y="28" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="24" font-weight="700" fill="currentColor">Swiggy</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="waitlist">
+        <div class="cta-content">
+            <div class="cta-label">Private Beta — March 2026</div>
+            <h2 class="cta-title">See what your users aren't telling you.</h2>
+            <p class="cta-desc">Stop guessing why users drop off. Get behavioral insights that reveal friction, frustration, and conversion blockers in real-time.</p>
+            <a href="https://app.youform.com/forms/qxrxlzlp" target="_blank" class="cta-button">Request Access</a>
+            <p class="cta-note">Early access • Direct onboarding support • Shape the roadmap</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-left">
+            <div class="footer-logo">velum_</div>
+            <div class="footer-copy">© 2026 Velum Inc. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script>
+        // Form handler
+        function handleSubmit(e) {
+            e.preventDefault();
+            const form = e.target;
+            form.innerHTML = '<div style="color: var(--orange); font-family: JetBrains Mono, monospace; font-size: 0.85rem;">✓ You\'re on the list. We\'ll be in touch.</div>';
+        }
+
+        // Reveal animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Cursor glow effect
+        const cursor = document.getElementById('cursor');
+        let cursorVisible = false;
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            if (!cursorVisible) {
+                cursor.style.opacity = '1';
+                cursorVisible = true;
+            }
+        });
+
+        document.addEventListener('mouseleave', () => {
+            cursor.style.opacity = '0';
+            cursorVisible = false;
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
