@@ -543,17 +543,30 @@
             max-width: 500px;
         }
 
+        .pipeline-scroll-hint {
+            display: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gray-4);
+            margin-top: 1rem;
+        }
+
+        .pipeline-scroll-hint span {
+            color: var(--orange);
+        }
+
         .pipeline-track {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
             gap: 0;
             position: relative;
         }
 
         .pipeline-step {
-            flex: 0 0 280px;
             padding: 2rem;
             border: 1px solid var(--gray-2);
             margin-right: -1px;
+            margin-bottom: -1px;
             position: relative;
         }
 
@@ -967,6 +980,14 @@
                 grid-template-columns: 1fr;
             }
 
+            .pipeline-track {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .pipeline-step:nth-child(3)::after {
+                display: none;
+            }
+
             .metrics-strip {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -1002,6 +1023,41 @@
             .patterns-section,
             .pipeline-section {
                 padding: 4rem 2rem;
+            }
+
+            .pipeline-scroll-hint {
+                display: block;
+            }
+
+            .pipeline-track {
+                display: flex;
+                grid-template-columns: unset;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x mandatory;
+                padding-bottom: 1rem;
+                margin-right: -2rem;
+                padding-right: 2rem;
+                scrollbar-width: thin;
+                scrollbar-color: var(--orange) var(--gray-2);
+            }
+
+            .pipeline-track::-webkit-scrollbar {
+                height: 4px;
+            }
+
+            .pipeline-track::-webkit-scrollbar-track {
+                background: var(--gray-2);
+            }
+
+            .pipeline-track::-webkit-scrollbar-thumb {
+                background: var(--orange);
+                border-radius: 2px;
+            }
+
+            .pipeline-step {
+                flex: 0 0 260px;
+                scroll-snap-align: start;
             }
 
             .patterns-header {
@@ -1247,6 +1303,7 @@
         <div class="pipeline-header reveal">
             <h2 class="pipeline-title">Six layers of behavioral intelligence.</h2>
             <p class="pipeline-subtitle">From raw events to actionable insights in under 200 milliseconds.</p>
+            <p class="pipeline-scroll-hint"><span>←</span> Swipe to explore <span>→</span></p>
         </div>
         <div class="pipeline-track">
             <div class="pipeline-step reveal">
