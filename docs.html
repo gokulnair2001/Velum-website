@@ -1,0 +1,1763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velum — Documentation</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' ry='6' fill='%23fafafa'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui, sans-serif' font-size='14' font-weight='700' fill='%230a0a0a'%3Ev_%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #050505;
+            --white: #f5f5f5;
+            --orange: #ff6b35;
+            --orange-dim: rgba(255, 107, 53, 0.12);
+            --orange-glow: rgba(255, 107, 53, 0.3);
+            --red: #ff4444;
+            --red-dim: rgba(255, 68, 68, 0.1);
+            --green: #34d399;
+            --green-dim: rgba(52, 211, 153, 0.1);
+            --yellow: #fbbf24;
+            --yellow-dim: rgba(251, 191, 36, 0.1);
+            --blue: #60a5fa;
+            --blue-dim: rgba(96, 165, 250, 0.1);
+            --purple: #a78bfa;
+            --purple-dim: rgba(167, 139, 250, 0.1);
+            --gray-1: #111;
+            --gray-2: #1e1e1e;
+            --gray-3: #333;
+            --gray-4: #666;
+            --gray-5: #999;
+            --sidebar-w: 280px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        ::selection { background: var(--orange); color: var(--black); }
+        html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--black); }
+        ::-webkit-scrollbar-thumb { background: var(--gray-3); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--orange); }
+
+        /* ── TOP NAV ── */
+        .top-nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 64px;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(5,5,5,0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--gray-2);
+        }
+
+        .top-nav-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .top-nav .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .top-nav .logo-sep {
+            color: var(--gray-3);
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        .top-nav .logo-docs {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--gray-5);
+            letter-spacing: 0.05em;
+        }
+
+        .top-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .top-nav-links a {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--gray-5);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .top-nav-links a:hover { color: var(--white); }
+
+        .top-nav-links .nav-cta {
+            padding: 0.5rem 1rem;
+            background: var(--orange);
+            color: var(--black);
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .top-nav-links .nav-cta:hover { background: var(--white); }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            bottom: 0;
+            width: var(--sidebar-w);
+            background: rgba(5,5,5,0.95);
+            border-right: 1px solid var(--gray-2);
+            overflow-y: auto;
+            padding: 1.5rem 0;
+            z-index: 900;
+        }
+
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--gray-3); }
+
+        .sidebar-section {
+            margin-bottom: 1.75rem;
+        }
+
+        .sidebar-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--gray-4);
+            padding: 0 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-link {
+            display: block;
+            font-size: 0.82rem;
+            color: var(--gray-5);
+            text-decoration: none;
+            padding: 0.35rem 1.5rem;
+            border-left: 2px solid transparent;
+            transition: all 0.15s;
+        }
+
+        .sidebar-link:hover {
+            color: var(--white);
+            background: rgba(255,255,255,0.02);
+        }
+
+        .sidebar-link.active {
+            color: var(--orange);
+            border-left-color: var(--orange);
+            background: var(--orange-dim);
+        }
+
+        .sidebar-link.sub {
+            padding-left: 2.25rem;
+            font-size: 0.78rem;
+        }
+
+        /* ── MAIN CONTENT ── */
+        .main {
+            margin-left: var(--sidebar-w);
+            padding: 64px 0 0;
+            min-height: 100vh;
+        }
+
+        .doc-content {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 3rem 3rem 6rem;
+        }
+
+        /* ── HERO BANNER ── */
+        .doc-hero {
+            padding: 4rem 0 3rem;
+            border-bottom: 1px solid var(--gray-2);
+            margin-bottom: 3rem;
+        }
+
+        .doc-hero-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--orange);
+            border: 1px solid rgba(255,107,53,0.3);
+            padding: 0.35rem 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .doc-hero-badge .dot {
+            width: 6px; height: 6px;
+            background: var(--orange);
+            border-radius: 50%;
+            animation: pulse 2s ease infinite;
+        }
+
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        .doc-hero h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        .doc-hero h1 .accent { color: var(--orange); }
+        .doc-hero h1 .dim { color: var(--gray-4); }
+
+        .doc-hero p {
+            font-size: 1.05rem;
+            color: var(--gray-5);
+            max-width: 600px;
+            line-height: 1.7;
+        }
+
+        .doc-hero-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .doc-hero-card {
+            border: 1px solid var(--gray-2);
+            padding: 1.25rem;
+            background: var(--gray-1);
+            transition: all 0.2s;
+        }
+
+        .doc-hero-card:hover {
+            border-color: var(--gray-3);
+            transform: translateY(-1px);
+        }
+
+        .doc-hero-card-icon {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .doc-hero-card h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .doc-hero-card p {
+            font-size: 0.75rem;
+            color: var(--gray-4);
+            line-height: 1.5;
+        }
+
+        /* ── SECTION STYLING ── */
+        .doc-section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 80px;
+        }
+
+        .doc-section h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--gray-2);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .doc-section h2 .section-icon {
+            font-size: 1.25rem;
+            opacity: 0.7;
+        }
+
+        .doc-section h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin: 2rem 0 0.75rem;
+            color: var(--white);
+        }
+
+        .doc-section h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.5rem;
+            color: var(--gray-5);
+        }
+
+        .doc-section p {
+            color: var(--gray-5);
+            margin-bottom: 1rem;
+            font-size: 0.92rem;
+            line-height: 1.8;
+        }
+
+        .doc-section strong { color: var(--white); }
+
+        .doc-section ul, .doc-section ol {
+            padding-left: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .doc-section li {
+            color: var(--gray-5);
+            font-size: 0.9rem;
+            margin-bottom: 0.35rem;
+            line-height: 1.7;
+        }
+
+        .doc-section a {
+            color: var(--orange);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .doc-section a:hover { border-bottom-color: var(--orange); }
+
+        /* ── CODE BLOCKS ── */
+        pre {
+            background: var(--gray-1);
+            border: 1px solid var(--gray-2);
+            border-radius: 4px;
+            padding: 1.25rem 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            margin-bottom: 1.25rem;
+            position: relative;
+        }
+
+        pre .prompt { color: var(--orange); }
+        pre .cmd { color: var(--white); }
+        pre .comment { color: var(--gray-4); font-style: italic; }
+        pre .string { color: #7c9885; }
+        pre .key { color: var(--blue); }
+        pre .number { color: #b5935a; }
+        pre .bool { color: var(--purple); }
+        pre .success { color: var(--green); }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            background: var(--gray-1);
+            border: 1px solid var(--gray-2);
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            color: var(--orange);
+        }
+
+        pre code {
+            background: none;
+            border: none;
+            padding: 0;
+            font-size: inherit;
+            color: inherit;
+        }
+
+        .code-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--gray-4);
+            background: var(--gray-2);
+            display: inline-block;
+            padding: 0.2rem 0.75rem;
+            border-radius: 3px 3px 0 0;
+            margin-bottom: -1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── TABLES ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+        }
+
+        th {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--gray-4);
+            text-align: left;
+            padding: 0.75rem 1rem;
+            border-bottom: 2px solid var(--gray-2);
+            background: var(--gray-1);
+        }
+
+        td {
+            padding: 0.7rem 1rem;
+            border-bottom: 1px solid var(--gray-2);
+            color: var(--gray-5);
+            vertical-align: top;
+        }
+
+        tr:hover td { background: rgba(255,255,255,0.01); }
+
+        td code {
+            font-size: 0.78rem;
+            white-space: nowrap;
+        }
+
+        /* ── CALLOUTS ── */
+        .callout {
+            border-left: 3px solid;
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+            background: var(--gray-1);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .callout-info { border-color: var(--blue); }
+        .callout-warn { border-color: var(--yellow); }
+        .callout-tip { border-color: var(--green); }
+        .callout-critical { border-color: var(--red); }
+
+        .callout-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+        }
+
+        .callout-info .callout-title { color: var(--blue); }
+        .callout-warn .callout-title { color: var(--yellow); }
+        .callout-tip .callout-title { color: var(--green); }
+        .callout-critical .callout-title { color: var(--red); }
+
+        .callout p { margin-bottom: 0; font-size: 0.85rem; }
+
+        /* ── PIPELINE VISUAL ── */
+        .pipeline-visual {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin: 1.5rem 0;
+        }
+
+        .pipeline-layer {
+            display: grid;
+            grid-template-columns: 50px 1fr auto;
+            gap: 1rem;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            border: 1px solid var(--gray-2);
+            border-bottom: none;
+            background: var(--black);
+            transition: all 0.2s;
+        }
+
+        .pipeline-layer:first-child { border-radius: 4px 4px 0 0; }
+        .pipeline-layer:last-child { border-bottom: 1px solid var(--gray-2); border-radius: 0 0 4px 4px; }
+
+        .pipeline-layer:hover { background: var(--gray-1); }
+
+        .pipeline-layer-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-3);
+        }
+
+        .pipeline-layer-info h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--white);
+            margin: 0 0 0.2rem;
+        }
+
+        .pipeline-layer-info p {
+            font-size: 0.78rem;
+            color: var(--gray-4);
+            margin: 0;
+        }
+
+        .pipeline-layer-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.2rem 0.6rem;
+            border-radius: 2px;
+            white-space: nowrap;
+        }
+
+        .tag-ai { color: var(--orange); background: var(--orange-dim); }
+        .tag-det { color: var(--green); background: var(--green-dim); }
+
+        .pipeline-connector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.25rem 0;
+            color: var(--gray-3);
+            font-size: 0.8rem;
+        }
+
+        /* ── PATTERN CARDS ── */
+        .pattern-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .pattern-item {
+            border: 1px solid var(--gray-2);
+            padding: 1.25rem;
+            background: var(--gray-1);
+            transition: all 0.2s;
+            border-radius: 4px;
+        }
+
+        .pattern-item:hover {
+            border-color: var(--gray-3);
+            transform: translateY(-1px);
+        }
+
+        .pattern-item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .pattern-item-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pattern-item-threshold {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 2px;
+        }
+
+        .pattern-item p {
+            font-size: 0.8rem;
+            color: var(--gray-4);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .pattern-item .pattern-vis {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gray-4);
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--gray-2);
+        }
+
+        /* ── TECH STACK GRID ── */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .tech-item {
+            border: 1px solid var(--gray-2);
+            padding: 1.25rem;
+            background: var(--gray-1);
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .tech-item:hover { border-color: var(--gray-3); }
+
+        .tech-item-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--gray-4);
+            margin-bottom: 0.35rem;
+        }
+
+        .tech-item-value {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        /* ── ARCHITECTURE DIAGRAM ── */
+        .arch-diagram {
+            background: var(--gray-1);
+            border: 1px solid var(--gray-2);
+            border-radius: 4px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            white-space: pre;
+            color: var(--gray-5);
+        }
+
+        .arch-diagram .hl { color: var(--orange); }
+        .arch-diagram .dim { color: var(--gray-3); }
+        .arch-diagram .ai { color: var(--purple); }
+        .arch-diagram .db { color: var(--blue); }
+        .arch-diagram .ok { color: var(--green); }
+
+        /* ── STEP CARDS ── */
+        .step-card {
+            border: 1px solid var(--gray-2);
+            border-radius: 4px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+
+        .step-card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem;
+            background: var(--gray-1);
+            border-bottom: 1px solid var(--gray-2);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .step-card-header:hover { background: var(--gray-2); }
+
+        .step-card-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--orange);
+            background: var(--orange-dim);
+            padding: 0.2rem 0.5rem;
+            border-radius: 2px;
+            font-weight: 600;
+        }
+
+        .step-card-title {
+            font-size: 0.92rem;
+            font-weight: 600;
+        }
+
+        .step-card-tag {
+            margin-left: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.15rem 0.5rem;
+            border-radius: 2px;
+        }
+
+        .step-card-body {
+            padding: 1.25rem;
+        }
+
+        .step-card-body p {
+            font-size: 0.85rem;
+            line-height: 1.7;
+        }
+
+        /* ── BACK TO TOP ── */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 40px;
+            height: 40px;
+            background: var(--gray-2);
+            border: 1px solid var(--gray-3);
+            color: var(--gray-5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 800;
+            text-decoration: none;
+        }
+
+        .back-to-top.visible { opacity: 1; }
+        .back-to-top:hover { background: var(--orange); color: var(--black); border-color: var(--orange); }
+
+        /* ── MOBILE SIDEBAR TOGGLE ── */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            bottom: 2rem;
+            left: 1rem;
+            width: 42px;
+            height: 42px;
+            background: var(--orange);
+            color: var(--black);
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            z-index: 950;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1024px) {
+            .doc-hero-cards { grid-template-columns: 1fr; }
+            .pattern-grid { grid-template-columns: 1fr; }
+            .tech-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            .sidebar.open { transform: translateX(0); }
+            .sidebar-toggle { display: flex; }
+            .main { margin-left: 0; }
+            .doc-content { padding: 2rem 1.5rem 4rem; }
+            .doc-hero-cards { grid-template-columns: 1fr; }
+            .pattern-grid { grid-template-columns: 1fr; }
+            .tech-grid { grid-template-columns: 1fr; }
+            .top-nav-links a:not(.nav-cta) { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ─── TOP NAV ─── -->
+    <nav class="top-nav">
+        <div class="top-nav-left">
+            <a href="index.html" class="logo">velum_</a>
+            <span class="logo-sep">/</span>
+            <span class="logo-docs">docs</span>
+        </div>
+        <div class="top-nav-links">
+            <a href="index.html">Home</a>
+            <a href="index.html#how">How it works</a>
+            <a href="https://app.youform.com/forms/qxrxlzlp" target="_blank" class="nav-cta">Get Access →</a>
+        </div>
+    </nav>
+
+    <!-- ─── SIDEBAR ─── -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-section">
+            <div class="sidebar-label">Getting Started</div>
+            <a href="#overview" class="sidebar-link active">Overview</a>
+            <a href="#quickstart" class="sidebar-link">Quick Start</a>
+            <a href="#try-it" class="sidebar-link">Try It</a>
+        </div>
+        <div class="sidebar-section">
+            <div class="sidebar-label">Architecture</div>
+            <a href="#pipeline" class="sidebar-link">Processing Pipeline</a>
+            <a href="#layer-0" class="sidebar-link sub">Context Enricher</a>
+            <a href="#layer-1" class="sidebar-link sub">Vocab Enricher</a>
+            <a href="#layer-2" class="sidebar-link sub">Event Adapter</a>
+            <a href="#layer-3" class="sidebar-link sub">Session Flow</a>
+            <a href="#layer-4" class="sidebar-link sub">Behavior Analyzer</a>
+            <a href="#layer-5" class="sidebar-link sub">Pattern Detector</a>
+            <a href="#layer-6" class="sidebar-link sub">Baseline Comparator</a>
+            <a href="#layer-7" class="sidebar-link sub">AI Analyzer</a>
+        </div>
+        <div class="sidebar-section">
+            <div class="sidebar-label">Patterns</div>
+            <a href="#patterns" class="sidebar-link">Detected Patterns</a>
+        </div>
+        <div class="sidebar-section">
+            <div class="sidebar-label">API Reference</div>
+            <a href="#api" class="sidebar-link">Endpoints</a>
+            <a href="#headers" class="sidebar-link sub">Headers</a>
+            <a href="#request" class="sidebar-link sub">Request Body</a>
+            <a href="#response" class="sidebar-link sub">Response Shape</a>
+        </div>
+        <div class="sidebar-section">
+            <div class="sidebar-label">Configuration</div>
+            <a href="#config" class="sidebar-link">Config Reference</a>
+            <a href="#security" class="sidebar-link sub">Security</a>
+            <a href="#ai-config" class="sidebar-link sub">AI Features</a>
+            <a href="#data-mapping" class="sidebar-link sub">Data Mapping</a>
+            <a href="#env-vars" class="sidebar-link sub">Environment Variables</a>
+        </div>
+        <div class="sidebar-section">
+            <div class="sidebar-label">Advanced</div>
+            <a href="#example" class="sidebar-link">Full Example</a>
+            <a href="#multi-tenancy" class="sidebar-link">Multi-Tenancy</a>
+            <a href="#resiliency" class="sidebar-link">Resiliency</a>
+            <a href="#tech-stack" class="sidebar-link">Tech Stack</a>
+        </div>
+    </aside>
+
+    <!-- ─── MOBILE SIDEBAR TOGGLE ─── -->
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle navigation">☰</button>
+
+    <!-- ─── MAIN ─── -->
+    <main class="main">
+        <div class="doc-content">
+
+            <!-- HERO -->
+            <div class="doc-hero" id="overview">
+                <div class="doc-hero-badge"><span class="dot"></span> Documentation</div>
+                <h1>Velum <span class="dim">Docs</span></h1>
+                <p>Everything you need to integrate, configure, and understand the Velum behavioral pattern detection engine.</p>
+
+                <div class="doc-hero-cards">
+                    <a href="#quickstart" class="doc-hero-card" style="text-decoration:none;color:inherit;">
+                        <div class="doc-hero-card-icon">⚡</div>
+                        <h4>Quick Start</h4>
+                        <p>Get Velum running in under 5 minutes with Go and PostgreSQL.</p>
+                    </a>
+                    <a href="#api" class="doc-hero-card" style="text-decoration:none;color:inherit;">
+                        <div class="doc-hero-card-icon">🔌</div>
+                        <h4>API Reference</h4>
+                        <p>Single endpoint. Send events, get back patterns and AI analysis.</p>
+                    </a>
+                    <a href="#pipeline" class="doc-hero-card" style="text-decoration:none;color:inherit;">
+                        <div class="doc-hero-card-icon">🧠</div>
+                        <h4>Architecture</h4>
+                        <p>Deep dive into the 8-layer processing pipeline powering Velum.</p>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ══════════ QUICK START ══════════ -->
+            <section class="doc-section" id="quickstart">
+                <h2><span class="section-icon">⚡</span> Quick Start</h2>
+
+                <h3>Prerequisites</h3>
+                <ul>
+                    <li><strong>Go 1.23+</strong></li>
+                    <li><strong>PostgreSQL</strong></li>
+                    <li><strong>LLM API key</strong> (optional — enables AI features) — <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer">Groq</a> (default), <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer">OpenAI</a>, or any OpenAI-compatible provider</li>
+                </ul>
+
+                <h3>Install &amp; Run</h3>
+                <div class="code-label">Terminal</div>
+                <pre><code><span class="prompt">$</span> <span class="cmd">git clone https://github.com/velum/velum.git</span>
+<span class="prompt">$</span> <span class="cmd">cd velum</span>
+<span class="prompt">$</span> <span class="cmd">go mod tidy</span>
+<span class="prompt">$</span> <span class="cmd">cp example.config.yaml config.yaml</span>   <span class="comment"># edit with your Postgres credentials</span>
+<span class="prompt">$</span> <span class="cmd">go run cmd/velum/main.go</span>
+<span class="success">✓ velum listening on :8080</span></code></pre>
+
+                <h3>Docker</h3>
+                <div class="code-label">Terminal</div>
+                <pre><code><span class="prompt">$</span> <span class="cmd">docker network create velum-network</span>
+<span class="prompt">$</span> <span class="cmd">docker compose up --build</span></code></pre>
+
+                <div class="callout callout-tip">
+                    <div class="callout-title">💡 Tip</div>
+                    <p>Velum creates all required database tables automatically on first connection. No migrations needed.</p>
+                </div>
+            </section>
+
+            <!-- ══════════ TRY IT ══════════ -->
+            <section class="doc-section" id="try-it">
+                <h2><span class="section-icon">🧪</span> Try It</h2>
+                <p>Send a few test events to see Velum detect patterns in real time:</p>
+
+                <div class="code-label">cURL</div>
+                <pre><code><span class="prompt">$</span> <span class="cmd">curl -X POST http://localhost:8080/api/v1/analyze \</span>
+  <span class="cmd">-H</span> <span class="string">"Content-Type: application/json"</span> <span class="cmd">\</span>
+  <span class="cmd">-H</span> <span class="string">"X-Project-ID: my-app"</span> <span class="cmd">\</span>
+  <span class="cmd">-d</span> <span class="string">'{
+    "events": [
+      {
+        "event": "checkout_page_view",
+        "ts": 1707500000000,
+        "user_id": "usr-101",
+        "session_id": "sess-abc",
+        "device": "mobile"
+      },
+      {
+        "event": "checkout_payment_click",
+        "ts": 1707500015000,
+        "user_id": "usr-101",
+        "session_id": "sess-abc",
+        "error_code": "card_declined"
+      },
+      {
+        "event": "checkout_payment_click",
+        "ts": 1707500045000,
+        "user_id": "usr-101",
+        "session_id": "sess-abc",
+        "error_code": "card_declined"
+      }
+    ]
+  }'</span></code></pre>
+
+                <div class="callout callout-info">
+                    <div class="callout-title">ℹ️ Schema Freedom</div>
+                    <p>Velum auto-detects which field is the event name, user ID, timestamp, etc. You don't need to configure your schema — the Context Enricher (Layer 0) handles it via AI.</p>
+                </div>
+            </section>
+
+            <!-- ══════════ PIPELINE ══════════ -->
+            <section class="doc-section" id="pipeline">
+                <h2><span class="section-icon">🔬</span> Processing Pipeline</h2>
+                <p>Events flow through an <strong>8-layer sequential pipeline</strong>. Each layer implements a <code>Layer</code> interface and processes the output of the previous layer. One API call triggers the full pipeline.</p>
+
+                <div class="pipeline-visual">
+                    <div class="pipeline-layer" id="layer-0">
+                        <span class="pipeline-layer-num">0</span>
+                        <div class="pipeline-layer-info">
+                            <h4>Context Enricher</h4>
+                            <p>Classifies event properties as dimension, target, condition, or measure via LLM (Groq default)</p>
+                        </div>
+                        <span class="pipeline-layer-tag tag-ai">AI-Powered</span>
+                    </div>
+                    <div class="pipeline-layer" id="layer-1">
+                        <span class="pipeline-layer-num">1</span>
+                        <div class="pipeline-layer-info">
+                            <h4>Vocab Enricher</h4>
+                            <p>Tokenizes event names, classifies unknown words as surface / status / flow / noise</p>
+                        </div>
+                        <span class="pipeline-layer-tag tag-ai">AI-Powered</span>
+                    </div>
+                    <div class="pipeline-layer" id="layer-2">
+                        <span class="pipeline-layer-num">2</span>
+                        <div class="pipeline-layer-info">
+                            <h4>Event Adapter</h4>
+                            <p>Normalizes raw events into canonical form using vocab + property lookups</p>
+                        </div>
+                        <span class="pipeline-layer-tag tag-det">Deterministic</span>
+                    </div>
+                    <div class="pipeline-layer" id="layer-3">
+                        <span class="pipeline-layer-num">3</span>
+                        <div class="pipeline-layer-info">
+                            <h4>Session Flow Reconstructor</h4>
+                            <p>Groups events by user + session. Splits at 30-min gaps. Builds flow instances with retry-cycle merging.</p>
+                        </div>
+                        <span class="pipeline-layer-tag tag-det">Deterministic</span>
+                    </div>
+                    <div class="pipeline-layer" id="layer-4">
+                        <span class="pipeline-layer-num">4</span>
+                        <div class="pipeline-layer-info">
+                            <h4>Behavior Analyzer</h4>
+                            <p>Tags flows with behavioral signals: explore, attempt, succeed, retry, abandon, hesitate</p>
+                        </div>
+                        <span class="pipeline-layer-tag tag-det">Deterministic</span>
+                    </div>
+                    <div class="pipeline-layer" id="layer-5">
+                        <span class="pipeline-layer-num">5</span>
+                        <div class="pipeline-layer-info">
+                            <h4>Pattern Detector</h4>
+                            <p>Aggregates behaviors across all users into named anti-patterns with impact ratios</p>
+                        </div>
+                        <span class="pipeline-layer-tag tag-det">Deterministic</span>
+                    </div>
+                    <div class="pipeline-layer" id="layer-6">
+                        <span class="pipeline-layer-num">6</span>
+                        <div class="pipeline-layer-info">
+                            <h4>Baseline Comparator</h4>
+                            <p>Compares current patterns against historical snapshots. Flags new, increasing, or anomalous trends.</p>
+                        </div>
+                        <span class="pipeline-layer-tag tag-det">Deterministic</span>
+                    </div>
+                    <div class="pipeline-layer" id="layer-7">
+                        <span class="pipeline-layer-num">7</span>
+                        <div class="pipeline-layer-info">
+                            <h4>AI Analyzer</h4>
+                            <p>Generates natural-language summaries with actionable hypotheses grounded in data</p>
+                        </div>
+                        <span class="pipeline-layer-tag tag-ai">AI-Powered</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ══════════ LAYER DEEP DIVES ══════════ -->
+            <section class="doc-section" id="layer-details">
+                <h2><span class="section-icon">🧬</span> Layer Deep Dives</h2>
+
+                <!-- LAYER 0 -->
+                <div class="step-card">
+                    <div class="step-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+                        <span class="step-card-num">L0</span>
+                        <span class="step-card-title">Context Enricher (Property Agent)</span>
+                        <span class="step-card-tag tag-ai">AI</span>
+                    </div>
+                    <div class="step-card-body">
+                        <p><strong>Purpose:</strong> Identifies the <strong>role</strong> of each property/field in your event JSON — which field is the user ID, timestamp, event name, etc.</p>
+                        <p>Different products send events in completely different schemas. The Property Agent eliminates the need for per-customer configuration by using LLM inference (Groq by default, or any configured provider) to classify fields automatically.</p>
+
+                        <h4>How it works</h4>
+                        <ol>
+                            <li>Samples events from the batch</li>
+                            <li>Sends them to Groq LLM with a classification prompt</li>
+                            <li>LLM returns a field → role mapping (event_name, user_id, timestamp, etc.)</li>
+                            <li>Mapping is cached and used by Layer 2 for field extraction</li>
+                        </ol>
+
+                        <div class="code-label">Example — Schema Detection</div>
+<pre><code><span class="comment">// Product A</span>
+{<span class="key">"event_name"</span>: <span class="string">"checkout"</span>, <span class="key">"uid"</span>: <span class="string">"u1"</span>, <span class="key">"time"</span>: <span class="number">170850000</span>}
+
+<span class="comment">// Product B</span>
+{<span class="key">"action"</span>: <span class="string">"purchase"</span>, <span class="key">"user"</span>: <span class="string">"u1"</span>, <span class="key">"timestamp"</span>: <span class="string">"2024-02-21T10:00:00Z"</span>}
+
+<span class="comment">// Velum detects both automatically — zero config needed</span></code></pre>
+
+                        <div class="callout callout-tip">
+                            <div class="callout-title">💡 Key insight</div>
+                            <p>Without the Property Agent, Velum would need a config file per customer. This layer makes Velum truly <strong>zero-config</strong>.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LAYER 1 -->
+                <div class="step-card">
+                    <div class="step-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+                        <span class="step-card-num">L1</span>
+                        <span class="step-card-title">Vocab Enricher</span>
+                        <span class="step-card-tag tag-ai">AI</span>
+                    </div>
+                    <div class="step-card-body">
+                        <p><strong>Purpose:</strong> Learns the meaning of unknown words in your event names by classifying them into semantic roles.</p>
+
+                        <table>
+                            <thead>
+                                <tr><th>Category</th><th>Examples</th><th>Meaning</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><code>Surface</code></td><td>checkout, payment, ride, playback</td><td>The "what" / "where"</td></tr>
+                                <tr><td><code>Status</code></td><td>failed, success, click, initiated</td><td>The "state"</td></tr>
+                                <tr><td><code>Flow</code></td><td>cart, auth, booking, registration</td><td>Higher-level grouping</td></tr>
+                                <tr><td><code>Noise</code></td><td>the, a, total, count</td><td>Irrelevant</td></tr>
+                            </tbody>
+                        </table>
+
+                        <h4>How it works</h4>
+                        <ol>
+                            <li>Tokenizes every event name (<code>payment_failed</code> → <code>["payment", "failed"]</code>)</li>
+                            <li>Checks each token against PostgreSQL vocab storage</li>
+                            <li>Unknown tokens are batched and sent to Groq LLM for classification</li>
+                            <li>Classifications are stored back to PostgreSQL for future requests</li>
+                        </ol>
+
+                        <div class="callout callout-info">
+                            <div class="callout-title">ℹ️ Parsing support</div>
+                            <p>Event names in <code>snake_case</code>, <code>camelCase</code>, <code>kebab-case</code>, and <code>dot.notation</code> are all tokenized and classified automatically.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LAYER 2 -->
+                <div class="step-card">
+                    <div class="step-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+                        <span class="step-card-num">L2</span>
+                        <span class="step-card-title">Event Adapter</span>
+                        <span class="step-card-tag tag-det">Deterministic</span>
+                    </div>
+                    <div class="step-card-body">
+                        <p><strong>Purpose:</strong> Transforms raw JSON events into <strong>canonical events</strong> — Velum's internal standardized format.</p>
+
+                        <h4>Dual-Lookup Guarantee</h4>
+                        <p>Tokens are resolved using a two-tier system for reliability:</p>
+                        <ol>
+                            <li><strong>PostgreSQL first</strong> — AI-learned vocab from Layers 0/1</li>
+                            <li><strong>Static vocabulary fallback</strong> — hardcoded common words</li>
+                            <li>If both miss → <code>uncategorized</code> (learned on next request)</li>
+                        </ol>
+
+                        <div class="code-label">Canonical Event Structure</div>
+<pre><code>CanonicalEvent{
+  <span class="key">Flow</span>:       <span class="string">"payment"</span>,       <span class="comment">// from Surface token</span>
+  <span class="key">Action</span>:     <span class="string">"payment"</span>,       <span class="comment">// from Surface token</span>
+  <span class="key">Status</span>:     <span class="string">"failed"</span>,        <span class="comment">// from Status token</span>
+  <span class="key">UserID</span>:     <span class="string">"u1"</span>,
+  <span class="key">SessionID</span>:  <span class="string">"s1"</span>,
+  <span class="key">Timestamp</span>:  <span class="number">1708500015000</span>,
+  <span class="key">RawProperties</span>: { ... }       <span class="comment">// original JSON preserved</span>
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- LAYER 3 -->
+                <div class="step-card">
+                    <div class="step-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+                        <span class="step-card-num">L3</span>
+                        <span class="step-card-title">Session Flow Reconstructor</span>
+                        <span class="step-card-tag tag-det">Deterministic</span>
+                    </div>
+                    <div class="step-card-body">
+                        <p><strong>Purpose:</strong> Groups canonical events into <strong>user sessions</strong> and <strong>flow instances</strong>.</p>
+
+                        <h4>Processing Steps</h4>
+                        <ol>
+                            <li><strong>Group by user</strong> — collect all events per user_id</li>
+                            <li><strong>Split into sessions</strong> — 30-minute inactivity gap threshold</li>
+                            <li><strong>Build flow instances</strong> — group contiguous events by flow name</li>
+                        </ol>
+
+                        <h4>Key Rules</h4>
+                        <table>
+                            <thead><tr><th>Rule</th><th>Example</th></tr></thead>
+                            <tbody>
+                                <tr><td>Same flow contiguous → same instance</td><td><code>playback_started, playback_error</code> → 1 flow</td></tr>
+                                <tr><td>Entry status → new instance</td><td><code>booking_requested</code> starts new booking flow</td></tr>
+                                <tr><td>Lifecycle events filtered</td><td><code>session_end, app_closed</code> → no flow created</td></tr>
+                                <tr><td>Surface-fallback folding</td><td><code>driver_assigned</code> folds into active booking flow</td></tr>
+                                <tr><td>Retry cycle merging</td><td>fail → re-attempt collapses into 1 flow instance</td></tr>
+                            </tbody>
+                        </table>
+
+                        <div class="callout callout-warn">
+                            <div class="callout-title">⚠️ Retry Cycle Detection</div>
+                            <p>When a flow fails and the user re-attempts (e.g., <code>booking → driver_cancelled → booking</code>), Velum merges these into a single flow instance with retry evidence. This prevents inflated flow counts.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LAYER 4 -->
+                <div class="step-card">
+                    <div class="step-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+                        <span class="step-card-num">L4</span>
+                        <span class="step-card-title">Behavior Analyzer</span>
+                        <span class="step-card-tag tag-det">Deterministic</span>
+                    </div>
+                    <div class="step-card-body">
+                        <p><strong>Purpose:</strong> Tags each flow instance with <strong>behavioral signals</strong> — what the user was doing.</p>
+
+                        <table>
+                            <thead><tr><th>Behavior</th><th>Meaning</th><th>Detection</th></tr></thead>
+                            <tbody>
+                                <tr><td><code>explore</code></td><td>User looked around</td><td>Entry/view events</td></tr>
+                                <tr><td><code>attempt</code></td><td>User tried to do something</td><td>Action events (submit, pay)</td></tr>
+                                <tr><td><code>succeed</code></td><td>User completed the goal</td><td>Success/complete status</td></tr>
+                                <tr><td><code>retry</code></td><td>User tried again after failure</td><td>Error → same action repeated</td></tr>
+                                <tr><td><code>abandon</code></td><td>User left without completing</td><td>No success + session ends</td></tr>
+                                <tr><td><code>hesitate</code></td><td>User paused before acting</td><td>Long delay between events</td></tr>
+                                <tr><td><code>progress</code></td><td>User moved to next step</td><td>Flow transition to deeper step</td></tr>
+                            </tbody>
+                        </table>
+
+                        <p>Each flow also receives an <strong>intent classification</strong>: <code>transact</code> (intended to complete a transaction), <code>browse</code> (just looking), or <code>unknown</code>.</p>
+                    </div>
+                </div>
+
+                <!-- LAYER 5 -->
+                <div class="step-card">
+                    <div class="step-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+                        <span class="step-card-num">L5</span>
+                        <span class="step-card-title">Pattern Detector</span>
+                        <span class="step-card-tag tag-det">Deterministic</span>
+                    </div>
+                    <div class="step-card-body">
+                        <p><strong>Purpose:</strong> Detects <strong>anti-patterns</strong> across all users — systemic problems, not individual quirks.</p>
+
+                        <h4>How it works</h4>
+                        <ol>
+                            <li>Groups all flow instances by <code>(flowName, contextKey)</code></li>
+                            <li>Runs 5 detection algorithms across each group</li>
+                            <li>Each detector calculates an <strong>impact ratio</strong> against configurable thresholds</li>
+                        </ol>
+
+                        <div class="callout callout-critical">
+                            <div class="callout-title">🔴 Cross-Instance Detection</div>
+                            <p>Patterns are detected <strong>across multiple flow instances per user</strong>, not just within a single flow. For example: user fails booking, creates new booking → counts as retry across instances. This is critical for accuracy.</p>
+                        </div>
+
+                        <div class="code-label">Example Output</div>
+<pre><code>{
+  <span class="key">"pattern"</span>: <span class="string">"retry_storm"</span>,
+  <span class="key">"flow"</span>: <span class="string">"booking"</span>,
+  <span class="key">"affected_users"</span>: <span class="number">3</span>,
+  <span class="key">"total_flows"</span>: <span class="number">4</span>,
+  <span class="key">"impact_ratio"</span>: <span class="number">0.75</span>,
+  <span class="key">"description"</span>: <span class="string">"High frequency of retry attempts in booking flow"</span>
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- LAYER 6 -->
+                <div class="step-card">
+                    <div class="step-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+                        <span class="step-card-num">L6</span>
+                        <span class="step-card-title">Baseline Comparator</span>
+                        <span class="step-card-tag tag-det">Deterministic</span>
+                    </div>
+                    <div class="step-card-body">
+                        <p><strong>Purpose:</strong> Compares current patterns against <strong>historical baselines</strong> stored in PostgreSQL to detect trends.</p>
+
+                        <h4>Trend Classifications</h4>
+                        <ul>
+                            <li><strong>New</strong> — first time this pattern was observed</li>
+                            <li><strong>Significant Increase</strong> — impact ratio increased beyond <code>std_dev_multiplier × σ</code></li>
+                            <li><strong>Significant Decrease</strong> — impact ratio decreased significantly</li>
+                            <li><strong>Stable</strong> — within normal historical range</li>
+                        </ul>
+
+                        <div class="code-label">Example — Statistical Comparison</div>
+<pre><code><span class="comment">// Current observation</span>
+retry_storm on booking: impact_ratio = <span class="number">0.75</span>
+
+<span class="comment">// Historical baseline (last 7 observations)</span>
+average = <span class="number">0.35</span>, σ = <span class="number">0.08</span>
+
+<span class="comment">// Deviation calculation</span>
+(<span class="number">0.75</span> - <span class="number">0.35</span>) / <span class="number">0.08</span> = <span class="number">5.0</span> standard deviations
+threshold = <span class="number">2.0</span>
+
+<span class="success">→ SIGNIFICANT INCREASE</span></code></pre>
+                    </div>
+                </div>
+
+                <!-- LAYER 7 -->
+                <div class="step-card">
+                    <div class="step-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+                        <span class="step-card-num">L7</span>
+                        <span class="step-card-title">AI Analyzer</span>
+                        <span class="step-card-tag tag-ai">AI</span>
+                    </div>
+                    <div class="step-card-body">
+                        <p><strong>Purpose:</strong> Generates <strong>natural language analysis</strong> of detected patterns using your configured LLM provider (Groq by default).</p>
+
+                        <h4>Enriched Prompt Includes</h4>
+                        <ul>
+                            <li>Pattern metadata (name, flow, affected users, impact ratios)</li>
+                            <li>Error code distributions from event evidence</li>
+                            <li>Sample user journeys (actual event sequences)</li>
+                            <li>Baseline comparison results</li>
+                        </ul>
+
+                        <h4>Strict Quality Rules</h4>
+                        <p>The system prompt enforces: numbers and percentages in every detail, error codes must be cited, hypotheses must reference specific data points, no generic filler.</p>
+
+                        <div class="code-label">Example AI Output</div>
+<pre><code>{
+  <span class="key">"summary"</span>: <span class="string">"Retry storm affecting 42% of playback users..."</span>,
+  <span class="key">"details"</span>: [<span class="string">"retry_storm in playback: 2/12 users. Errors: buffer_timeout (2), drm_license_failed (3)"</span>],
+  <span class="key">"hypotheses"</span>: [<span class="string">"DRM licensing may be broken for IN region — 3 of 5 failures are drm_license_failed on mobile"</span>],
+  <span class="key">"confidence_note"</span>: <span class="string">"These are hypotheses based on observed behavioral changes."</span>
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ══════════ PATTERNS ══════════ -->
+            <section class="doc-section" id="patterns">
+                <h2><span class="section-icon">🎯</span> Detected Patterns</h2>
+                <p>Velum detects six behavioral anti-patterns across users. Detection is <strong>cross-instance</strong> — patterns are found across multiple flow instances per user for maximum accuracy.</p>
+
+                <div class="pattern-grid">
+                    <div class="pattern-item">
+                        <div class="pattern-item-header">
+                            <span class="pattern-item-name">🔥 Retry Storm</span>
+                            <span class="pattern-item-threshold" style="color:var(--red);background:var(--red-dim);">≥ 30%</span>
+                        </div>
+                        <p>Users retrying the same action repeatedly after failures. Indicates broken UX, missing feedback, or backend errors.</p>
+                        <div class="pattern-vis">usr-101: click → <span style="color:var(--red)">fail</span> → click → <span style="color:var(--red)">fail</span> → click → <span style="color:var(--red)">fail</span></div>
+                    </div>
+                    <div class="pattern-item">
+                        <div class="pattern-item-header">
+                            <span class="pattern-item-name">🎭 Masked Failure</span>
+                            <span class="pattern-item-threshold" style="color:var(--yellow);background:var(--yellow-dim);">≥ 2 flows</span>
+                        </div>
+                        <p>Users failing but eventually succeeding — hiding real friction. The success masks the underlying problem.</p>
+                        <div class="pattern-vis">usr-201: <span style="color:var(--red)">fail</span> → <span style="color:var(--red)">fail</span> → <span style="color:var(--green)">success</span> <span style="color:var(--gray-4)">(problem hidden)</span></div>
+                    </div>
+                    <div class="pattern-item">
+                        <div class="pattern-item-header">
+                            <span class="pattern-item-name">😶 Silent Abandonment</span>
+                            <span class="pattern-item-threshold" style="color:var(--yellow);background:var(--yellow-dim);">≥ 2 users</span>
+                        </div>
+                        <p>Users explore but never attempt any action. They arrive, see, and leave without interacting.</p>
+                        <div class="pattern-vis">usr-312: view → <span style="color:var(--gray-3)">............</span> → exit</div>
+                    </div>
+                    <div class="pattern-item">
+                        <div class="pattern-item-header">
+                            <span class="pattern-item-name">🚪 Early Dropoff</span>
+                            <span class="pattern-item-threshold" style="color:var(--yellow);background:var(--yellow-dim);">≥ 40%</span>
+                        </div>
+                        <p>Users bounce immediately after starting a flow. No attempt, no interaction — something repelled them.</p>
+                        <div class="pattern-vis">baseline: step 4 · actual: <span style="color:var(--red)">step 1</span> → exit</div>
+                    </div>
+                    <div class="pattern-item">
+                        <div class="pattern-item-header">
+                            <span class="pattern-item-name">🔄 Confusion Loop</span>
+                            <span class="pattern-item-threshold" style="color:var(--red);background:var(--red-dim);">≥ 30%</span>
+                        </div>
+                        <p>Same event repeated 3+ times — users going in circles, unable to find what they need.</p>
+                        <div class="pattern-vis">usr-445: A → B → A → B → A → exit</div>
+                    </div>
+                    <div class="pattern-item">
+                        <div class="pattern-item-header">
+                            <span class="pattern-item-name">⏸ Hesitation</span>
+                            <span class="pattern-item-threshold" style="color:var(--blue);background:var(--blue-dim);">Signal</span>
+                        </div>
+                        <p>Long pauses before critical actions. Indicates doubt, anxiety, or hidden friction in the experience.</p>
+                        <div class="pattern-vis">usr-628: view → <span style="color:var(--orange)">47s pause</span> → exit</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ══════════ API REFERENCE ══════════ -->
+            <section class="doc-section" id="api">
+                <h2><span class="section-icon">🔌</span> API Reference</h2>
+
+                <h3 id="headers">Endpoints</h3>
+                <table>
+                    <thead><tr><th>Method</th><th>Path</th><th>Auth</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>GET</code></td><td><code>/health</code></td><td>None</td><td>Health check (DB connectivity)</td></tr>
+                        <tr><td><code>POST</code></td><td><code>/api/v1/analyze</code></td><td><code>X-Infra-Key</code></td><td>Analyze events</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Headers</h3>
+                <table>
+                    <thead><tr><th>Header</th><th>Required</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>X-Project-ID</code></td><td>Always</td><td>Project identifier (1–64 chars, alphanumeric/hyphens/underscores). Scopes storage.</td></tr>
+                        <tr><td><code>X-Infra-Key</code></td><td>When <code>security.enabled: true</code></td><td>Raw API key (server compares SHA-256 hash)</td></tr>
+                    </tbody>
+                </table>
+
+                <h3 id="request">Request Body</h3>
+                <div class="code-label">POST /api/v1/analyze</div>
+<pre><code>{
+  <span class="key">"events"</span>: [
+    {
+      <span class="key">"event"</span>: <span class="string">"checkout_payment_click"</span>,     <span class="comment">// required — event name</span>
+      <span class="key">"ts"</span>: <span class="number">1707500000000</span>,                  <span class="comment">// required — epoch milliseconds</span>
+      <span class="key">"user_id"</span>: <span class="string">"usr-123"</span>,                 <span class="comment">// required — user identifier</span>
+      <span class="key">"session_id"</span>: <span class="string">"sess-abc"</span>,             <span class="comment">// optional — session identifier</span>
+      <span class="key">"device"</span>: <span class="string">"mobile"</span>,                   <span class="comment">// auto-classified as dimension</span>
+      <span class="key">"error_code"</span>: <span class="string">"card_declined"</span>          <span class="comment">// auto-classified as condition</span>
+    }
+  ]
+}</code></pre>
+
+                <div class="callout callout-info">
+                    <div class="callout-title">ℹ️ Property Classification</div>
+                    <p>Any additional properties beyond <code>event</code>, <code>ts</code>, <code>user_id</code>, and <code>session_id</code> are automatically classified into roles: <strong>dimension</strong> (device, country), <strong>target</strong> (product_id), <strong>condition</strong> (error_code), or <strong>measure</strong> (cart_value).</p>
+                </div>
+
+                <h3 id="response">Response Shape</h3>
+                <div class="code-label">With AI enabled</div>
+<pre><code>{
+  <span class="key">"success"</span>: <span class="bool">true</span>,
+  <span class="key">"message"</span>: <span class="string">"Behavioral analysis complete"</span>,
+  <span class="key">"request_id"</span>: <span class="string">"..."</span>,
+  <span class="key">"data"</span>: {
+    <span class="key">"ai_analysis"</span>: {
+      <span class="key">"summary"</span>: <span class="string">"Booking flow shows 75% retry storm rate..."</span>,
+      <span class="key">"details"</span>: [<span class="string">"..."</span>],
+      <span class="key">"hypotheses"</span>: [<span class="string">"Driver supply insufficient for long-distance rides..."</span>],
+      <span class="key">"confidence_note"</span>: <span class="string">"Hypotheses based on observed behavioral changes."</span>
+    }
+  }
+}</code></pre>
+
+                <p>When AI is disabled, <code>data.patterns</code> is returned instead of <code>data.ai_analysis</code>, containing the raw detected patterns array.</p>
+            </section>
+
+            <!-- ══════════ CONFIGURATION ══════════ -->
+            <section class="doc-section" id="config">
+                <h2><span class="section-icon">⚙️</span> Configuration</h2>
+                <p>Config is loaded from <code>config.yaml</code> → <code>config.yml</code> → <code>/etc/velum/config.yaml</code> (first found wins), then overridden by <code>VELUM_*</code> environment variables.</p>
+
+                <h3>Minimal Config</h3>
+                <div class="code-label">config.yaml</div>
+<pre><code><span class="key">server</span>:
+  <span class="key">port</span>: <span class="string">"8080"</span>
+  <span class="key">environment</span>: <span class="string">"development"</span>
+
+<span class="key">storage</span>:
+  <span class="key">type</span>: <span class="string">"postgres"</span>
+  <span class="key">postgres</span>:
+    <span class="key">host</span>: <span class="string">"localhost"</span>
+    <span class="key">port</span>: <span class="number">5432</span>
+    <span class="key">database</span>: <span class="string">"velum"</span>
+    <span class="key">user</span>: <span class="string">"velum_user"</span>
+    <span class="key">password</span>: <span class="string">"your_password"</span>
+
+<span class="key">security</span>:
+  <span class="key">enabled</span>: <span class="bool">false</span></code></pre>
+
+                <h3>Config Sections</h3>
+                <table>
+                    <thead><tr><th>Section</th><th>Purpose</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>server</code></td><td>Port, host, environment, timeouts</td></tr>
+                        <tr><td><code>storage</code></td><td>PostgreSQL connection details, retention days</td></tr>
+                        <tr><td><code>security</code></td><td>API key auth toggle + SHA-256 hash of key</td></tr>
+                        <tr><td><code>cors</code></td><td>Allowed origins, methods, headers</td></tr>
+                        <tr><td><code>resiliency</code></td><td>Rate limit (req/s), circuit breaker settings</td></tr>
+                        <tr><td><code>baseline</code></td><td>Window days, min days, computation mode, trend thresholds</td></tr>
+                        <tr><td><code>ai_analyzer</code></td><td>Enable + provider + API key + model for Layer 7</td></tr>
+                        <tr><td><code>vocab_agent</code></td><td>Enable + provider + API key + model for Layer 1</td></tr>
+                        <tr><td><code>context_agent</code></td><td>Enable + provider + API key + model for Layer 0</td></tr>
+                        <tr><td><code>data_mapping</code></td><td>Declarative field mapping for custom schemas</td></tr>
+                    </tbody>
+                </table>
+
+                <h3 id="security">Security</h3>
+                <div class="code-label">config.yaml</div>
+<pre><code><span class="key">security</span>:
+  <span class="key">enabled</span>: <span class="bool">true</span>
+  <span class="key">api_key_hash</span>: <span class="string">"&lt;sha256-hash-of-your-key&gt;"</span></code></pre>
+
+                <p>Generate a hash:</p>
+                <pre><code><span class="prompt">$</span> <span class="cmd">printf "my-secret-key" | shasum -a 256</span></code></pre>
+                <p>Then pass <code>X-Infra-Key: my-secret-key</code> on every request. Velum compares using <strong>constant-time SHA-256</strong> comparison.</p>
+
+                <h3 id="ai-config">AI Features</h3>
+                <p>All three AI layers support any <strong>OpenAI-compatible API</strong> — <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer">Groq</a> (default), OpenAI, Together, Mistral, Fireworks, and more. The API URL is auto-resolved from the <code>provider</code> name.</p>
+
+                <div class="code-label">Groq (default — just set the key)</div>
+<pre><code><span class="key">ai_analyzer</span>:
+  <span class="key">enabled</span>: <span class="bool">true</span>
+  <span class="key">provider</span>: <span class="string">"groq"</span>              <span class="comment"># URL auto-resolved (default if omitted)</span>
+  <span class="key">api_key</span>: <span class="string">"gsk_..."</span>             <span class="comment"># or env: VELUM_AI_API_KEY</span>
+  <span class="key">model</span>: <span class="string">"llama-3.1-8b-instant"</span></code></pre>
+
+                <div class="code-label">OpenAI</div>
+<pre><code><span class="key">ai_analyzer</span>:
+  <span class="key">enabled</span>: <span class="bool">true</span>
+  <span class="key">provider</span>: <span class="string">"openai"</span>             <span class="comment"># URL auto-resolved</span>
+  <span class="key">api_key</span>: <span class="string">"sk-..."</span>              <span class="comment"># or env: VELUM_AI_API_KEY</span>
+  <span class="key">model</span>: <span class="string">"gpt-4o-mini"</span></code></pre>
+
+                <div class="code-label">Custom / Self-Hosted (Ollama, vLLM, LiteLLM, etc.)</div>
+<pre><code><span class="key">ai_analyzer</span>:
+  <span class="key">enabled</span>: <span class="bool">true</span>
+  <span class="key">provider</span>: <span class="string">"custom"</span>
+  <span class="key">base_url</span>: <span class="string">"http://localhost:11434/v1/chat/completions"</span>
+  <span class="key">model</span>: <span class="string">"llama3"</span></code></pre>
+
+                <div class="callout callout-tip">
+                    <div class="callout-title">💡 Provider config</div>
+                    <p>The same <code>provider</code>, <code>api_key</code>, <code>model</code>, and <code>base_url</code> fields are available on all three agents (<code>ai_analyzer</code>, <code>vocab_agent</code>, <code>context_agent</code>). The <code>base_url</code> field is only needed for custom endpoints. If <code>provider</code> is omitted, it defaults to <code>"groq"</code>.</p>
+                </div>
+
+                <h3 id="data-mapping">Data Mapping</h3>
+                <p>If your events use a non-standard schema, map fields declaratively:</p>
+                <div class="code-label">config.yaml</div>
+<pre><code><span class="key">data_mapping</span>:
+  <span class="key">enabled</span>: <span class="bool">true</span>
+  <span class="key">mapping</span>:
+    <span class="key">event</span>:
+      <span class="key">paths</span>: [<span class="string">"payload.event.action"</span>, <span class="string">"event_name"</span>]
+      <span class="key">required</span>: <span class="bool">true</span>
+    <span class="key">ts</span>:
+      <span class="key">paths</span>: [<span class="string">"meta.time"</span>, <span class="string">"timestamp"</span>]
+      <span class="key">format</span>: <span class="string">"epoch_ms"</span>
+      <span class="key">required</span>: <span class="bool">true</span>
+    <span class="key">user_id</span>:
+      <span class="key">paths</span>: [<span class="string">"context.user.id"</span>, <span class="string">"user_id"</span>]
+      <span class="key">required</span>: <span class="bool">true</span>
+    <span class="key">session_id</span>:
+      <span class="key">paths</span>: [<span class="string">"context.session.id"</span>, <span class="string">"session_id"</span>]</code></pre>
+                <p>Supports dot-notation paths with fallback order. Extra properties pass through automatically.</p>
+
+                <h3 id="env-vars">Environment Variables</h3>
+                <table>
+                    <thead><tr><th>Variable</th><th>Overrides</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>VELUM_PORT</code></td><td><code>server.port</code></td></tr>
+                        <tr><td><code>VELUM_ENV</code></td><td><code>server.environment</code></td></tr>
+                        <tr><td><code>VELUM_DB_HOST</code></td><td><code>storage.postgres.host</code></td></tr>
+                        <tr><td><code>VELUM_DB_USER</code></td><td><code>storage.postgres.user</code></td></tr>
+                        <tr><td><code>VELUM_DB_PASSWORD</code></td><td><code>storage.postgres.password</code></td></tr>
+                        <tr><td><code>VELUM_DB_NAME</code></td><td><code>storage.postgres.database</code></td></tr>
+                        <tr><td><code>VELUM_DB_PORT</code></td><td><code>storage.postgres.port</code></td></tr>
+                        <tr><td><code>VELUM_DB_SSL_MODE</code></td><td><code>storage.postgres.ssl_mode</code></td></tr>
+                        <tr><td><code>VELUM_AI_API_KEY</code></td><td><code>ai_analyzer.api_key</code></td></tr>
+                        <tr><td><code>VELUM_VOCAB_AGENT_API_KEY</code></td><td><code>vocab_agent.api_key</code></td></tr>
+                        <tr><td><code>VELUM_CONTEXT_AGENT_API_KEY</code></td><td><code>context_agent.api_key</code></td></tr>
+                        <tr><td><code>VELUM_API_KEY_HASH</code></td><td><code>security.api_key_hash</code></td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- ══════════ FULL EXAMPLE ══════════ -->
+            <section class="doc-section" id="example">
+                <h2><span class="section-icon">📋</span> Full Example: Ride-Hailing App</h2>
+                <p>Here's a complete walkthrough showing what each pipeline layer does with a real ride-hailing scenario.</p>
+
+                <h3>Input Events</h3>
+                <div class="code-label">POST /api/v1/analyze</div>
+<pre><code>{
+  <span class="key">"events"</span>: [
+    {<span class="key">"event"</span>:<span class="string">"app_opened"</span>,<span class="key">"ts"</span>:<span class="number">1708700000000</span>,<span class="key">"user_id"</span>:<span class="string">"u1"</span>,<span class="key">"session_id"</span>:<span class="string">"s1"</span>,<span class="key">"device"</span>:<span class="string">"mobile"</span>,<span class="key">"country"</span>:<span class="string">"IN"</span>},
+    {<span class="key">"event"</span>:<span class="string">"booking_requested"</span>,<span class="key">"ts"</span>:<span class="number">1708700045000</span>,<span class="key">"user_id"</span>:<span class="string">"u1"</span>,<span class="key">"session_id"</span>:<span class="string">"s1"</span>,<span class="key">"fare"</span>:<span class="number">790</span>},
+    {<span class="key">"event"</span>:<span class="string">"driver_assigned"</span>,<span class="key">"ts"</span>:<span class="number">1708700060000</span>,<span class="key">"user_id"</span>:<span class="string">"u1"</span>,<span class="key">"session_id"</span>:<span class="string">"s1"</span>,<span class="key">"driver_id"</span>:<span class="string">"d01"</span>},
+    {<span class="key">"event"</span>:<span class="string">"driver_cancelled"</span>,<span class="key">"ts"</span>:<span class="number">1708700090000</span>,<span class="key">"user_id"</span>:<span class="string">"u1"</span>,<span class="key">"session_id"</span>:<span class="string">"s1"</span>,<span class="key">"cancel_reason"</span>:<span class="string">"too_far"</span>},
+    {<span class="key">"event"</span>:<span class="string">"booking_requested"</span>,<span class="key">"ts"</span>:<span class="number">1708700095000</span>,<span class="key">"user_id"</span>:<span class="string">"u1"</span>,<span class="key">"session_id"</span>:<span class="string">"s1"</span>,<span class="key">"fare"</span>:<span class="number">790</span>},
+    {<span class="key">"event"</span>:<span class="string">"driver_assigned"</span>,<span class="key">"ts"</span>:<span class="number">1708700110000</span>,<span class="key">"user_id"</span>:<span class="string">"u1"</span>,<span class="key">"session_id"</span>:<span class="string">"s1"</span>,<span class="key">"driver_id"</span>:<span class="string">"d02"</span>},
+    {<span class="key">"event"</span>:<span class="string">"ride_started"</span>,<span class="key">"ts"</span>:<span class="number">1708700180000</span>,<span class="key">"user_id"</span>:<span class="string">"u1"</span>,<span class="key">"session_id"</span>:<span class="string">"s1"</span>},
+    {<span class="key">"event"</span>:<span class="string">"ride_completed"</span>,<span class="key">"ts"</span>:<span class="number">1708701000000</span>,<span class="key">"user_id"</span>:<span class="string">"u1"</span>,<span class="key">"session_id"</span>:<span class="string">"s1"</span>}
+  ]
+}</code></pre>
+
+                <h3>Layer-by-Layer Trace</h3>
+<pre><code><span class="comment">Layer 0 (Context Enricher):</span>
+  Schema detected: event="event", timestamp="ts", user_id="user_id"
+
+<span class="comment">Layer 2 (Event Adapter):</span>
+  <span class="string">"booking_requested"</span> → {Flow:<span class="string">"booking"</span>, Status:<span class="string">"request"</span>}
+  <span class="string">"driver_assigned"</span>   → {Flow:<span class="string">"driver"</span>,  Status:<span class="string">"assigned"</span>}
+  <span class="string">"driver_cancelled"</span>  → {Flow:<span class="string">"driver"</span>,  Status:<span class="string">"cancelled"</span>}
+  <span class="string">"ride_completed"</span>    → {Flow:<span class="string">"ride"</span>,    Status:<span class="string">"completed"</span>}
+
+<span class="comment">Layer 3 (Session Flow):</span>
+  u1 → Flow 1: <span class="key">booking</span> [booking_requested, driver_*, booking_requested, driver_*]
+       <span class="comment">↑ driver events folded in, retry cycle merged</span>
+       Flow 2: <span class="key">ride</span> [ride_started, ride_completed]
+
+<span class="comment">Layer 4 (Behavior):</span>
+  booking: [<span class="string">attempt</span>, <span class="string">retry</span>, <span class="string">progress</span>]
+  ride:    [<span class="string">attempt</span>, <span class="string">succeed</span>]
+
+<span class="comment">Layer 5 (Patterns — across all users):</span>
+  <span style="color:var(--red)">retry_storm</span> on booking: 3/4 users (75%) → <span class="success">DETECTED</span>
+  <span style="color:var(--yellow)">masked_failure</span> on booking: 2/4 users → <span class="success">DETECTED</span>
+
+<span class="comment">Layer 6 (Baseline):</span>
+  retry_storm: FIRST OBSERVATION → establishing baseline
+  masked_failure: FIRST OBSERVATION → establishing baseline
+
+<span class="comment">Layer 7 (AI):</span>
+  <span class="string">"75% retry storm in booking — driver_cancelled with cancel_reason=too_far
+   in 2 of 3 cases. Driver supply may be insufficient for long-distance rides."</span></code></pre>
+            </section>
+
+            <!-- ══════════ MULTI-TENANCY ══════════ -->
+            <section class="doc-section" id="multi-tenancy">
+                <h2><span class="section-icon">🏢</span> Multi-Tenancy</h2>
+                <p>Each <code>X-Project-ID</code> gets isolated storage:</p>
+                <ul>
+                    <li><strong>Pattern baselines</strong> are stored in per-project tables (<code>pattern_snapshots_{project_id}</code>)</li>
+                    <li><strong>Vocabulary</strong> and <strong>property registry</strong> are shared across projects</li>
+                    <li>A background goroutine runs <strong>daily cleanup</strong> of snapshots older than <code>retention_days</code></li>
+                </ul>
+
+                <h3>Database Tables</h3>
+                <table>
+                    <thead><tr><th>Table</th><th>Scope</th><th>Purpose</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>vocabulary</code></td><td>Shared</td><td>AI-learned word classifications</td></tr>
+                        <tr><td><code>property_registry</code></td><td>Shared</td><td>AI-learned property classifications</td></tr>
+                        <tr><td><code>pattern_snapshots_{id}</code></td><td>Per-project</td><td>Historical pattern observations for baselines</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- ══════════ RESILIENCY ══════════ -->
+            <section class="doc-section" id="resiliency">
+                <h2><span class="section-icon">🛡️</span> Resiliency</h2>
+                <p>Velum is built for production reliability with multiple layers of protection:</p>
+                <table>
+                    <thead><tr><th>Feature</th><th>Details</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Circuit Breaker</strong></td><td>Wraps all LLM calls. After N failures, circuit opens — AI layers degrade gracefully until reset timeout.</td></tr>
+                        <tr><td><strong>Rate Limiting</strong></td><td>Configurable req/s via <code>go-chi/httprate</code>. Returns HTTP 429 when exceeded.</td></tr>
+                        <tr><td><strong>Body Limit</strong></td><td>10 MB max request body to prevent OOM attacks.</td></tr>
+                        <tr><td><strong>Graceful Shutdown</strong></td><td>Catches SIGTERM/SIGINT, waits for active requests to finish (configurable timeout).</td></tr>
+                        <tr><td><strong>Background Cleanup</strong></td><td>Daily goroutine deletes old snapshots per retention policy. Cancellable on shutdown.</td></tr>
+                        <tr><td><strong>Health Check</strong></td><td><code>/health</code> endpoint checks DB connectivity. Returns <code>"degraded"</code> if unreachable.</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- ══════════ TECH STACK ══════════ -->
+            <section class="doc-section" id="tech-stack">
+                <h2><span class="section-icon">🔧</span> Tech Stack</h2>
+                <div class="tech-grid">
+                    <div class="tech-item">
+                        <div class="tech-item-label">Language</div>
+                        <div class="tech-item-value">Go 1.23+</div>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-item-label">HTTP Router</div>
+                        <div class="tech-item-value">chi/v5</div>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-item-label">Database</div>
+                        <div class="tech-item-value">PostgreSQL</div>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-item-label">LLM Provider</div>
+                        <div class="tech-item-value">Groq (default)</div>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-item-label">Rate Limiting</div>
+                        <div class="tech-item-value">go-chi/httprate</div>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-item-label">Config</div>
+                        <div class="tech-item-value">YAML + Env Vars</div>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-item-label">Auth</div>
+                        <div class="tech-item-value">SHA-256 API Key</div>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-item-label">Logging</div>
+                        <div class="tech-item-value">Go slog</div>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-item-label">Container</div>
+                        <div class="tech-item-value">Docker + Compose</div>
+                    </div>
+                </div>
+
+                <h3>External Dependencies</h3>
+                <table>
+                    <thead><tr><th>Dependency</th><th>Purpose</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>github.com/go-chi/chi/v5</code></td><td>HTTP router</td></tr>
+                        <tr><td><code>github.com/go-chi/cors</code></td><td>CORS middleware</td></tr>
+                        <tr><td><code>github.com/go-chi/httprate</code></td><td>Rate limiting middleware</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Build &amp; Test</h3>
+                <div class="code-label">Terminal</div>
+<pre><code><span class="prompt">$</span> <span class="cmd">go test ./...</span>           <span class="comment"># All tests</span>
+<span class="prompt">$</span> <span class="cmd">go test ./... -v</span>        <span class="comment"># Verbose</span>
+<span class="prompt">$</span> <span class="cmd">go test ./... -cover</span>    <span class="comment"># With coverage</span>
+<span class="prompt">$</span> <span class="cmd">go build -o velum cmd/velum/main.go</span>  <span class="comment"># Build binary</span></code></pre>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- ─── BACK TO TOP ─── -->
+    <a href="#overview" class="back-to-top" id="backToTop">↑</a>
+
+    <script>
+        // Sidebar active state tracking
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+        const visibleSections = new Set();
+
+        // Collect all observable targets (sections, pipeline layers, etc.)
+        const allTargets = [
+            ...document.querySelectorAll('.doc-section[id], .doc-hero[id]'),
+            ...document.querySelectorAll('.pipeline-layer[id]')
+        ];
+
+        function setActiveLink(id) {
+            sidebarLinks.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+            });
+        }
+
+        function updateActiveFromVisible() {
+            if (visibleSections.size === 0) return;
+
+            // Pick the topmost visible section by DOM order
+            for (const target of allTargets) {
+                if (target.id && visibleSections.has(target.id)) {
+                    setActiveLink(target.id);
+                    return;
+                }
+            }
+        }
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.target.id) {
+                    if (entry.isIntersecting) {
+                        visibleSections.add(entry.target.id);
+                    } else {
+                        visibleSections.delete(entry.target.id);
+                    }
+                }
+            });
+            updateActiveFromVisible();
+        }, { threshold: 0.1, rootMargin: '-80px 0px -40% 0px' });
+
+        allTargets.forEach(el => {
+            if (el.id) sectionObserver.observe(el);
+        });
+
+        // Handle initial hash on direct landing (e.g. docs.html#api)
+        function activateFromHash() {
+            const hash = window.location.hash;
+            if (hash) {
+                setActiveLink(hash.slice(1));
+            }
+        }
+        // Run on load — the observer may not have fired yet
+        activateFromHash();
+        window.addEventListener('hashchange', activateFromHash);
+
+        // Back to top visibility
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            backToTop.classList.toggle('visible', window.scrollY > 400);
+        });
+
+        // Smooth scroll for sidebar links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const href = this.getAttribute('href');
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    history.pushState(null, '', href);
+                    setActiveLink(href.slice(1));
+                    // Close mobile sidebar
+                    document.getElementById('sidebar').classList.remove('open');
+                }
+            });
+        });
+
+        // Mobile sidebar toggle
+        document.getElementById('sidebarToggle').addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('open');
+        });
+
+        // Close sidebar on outside click (mobile)
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('sidebar');
+            const toggle = document.getElementById('sidebarToggle');
+            if (window.innerWidth <= 768 && !sidebar.contains(e.target) && !toggle.contains(e.target)) {
+                sidebar.classList.remove('open');
+            }
+        });
+    </script>
+</body>
+</html>
