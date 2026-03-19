@@ -775,6 +775,7 @@
         <div class="top-nav-links">
             <a href="index.html">Home</a>
             <a href="index.html#how">How it works</a>
+            <a href="https://github.com/gokulnair2001/Velum" target="_blank" rel="noopener noreferrer">GitHub</a>
             <a href="https://app.youform.com/forms/qxrxlzlp" target="_blank" class="nav-cta">Get Access →</a>
         </div>
     </nav>
@@ -802,6 +803,7 @@
         <div class="sidebar-section">
             <div class="sidebar-label">Patterns</div>
             <a href="#patterns" class="sidebar-link">Detected Patterns</a>
+            <a href="#severity" class="sidebar-link sub">Severity & Significance</a>
         </div>
         <div class="sidebar-section">
             <div class="sidebar-label">API Reference</div>
@@ -814,6 +816,7 @@
             <div class="sidebar-label">Configuration</div>
             <a href="#config" class="sidebar-link">Config Reference</a>
             <a href="#security" class="sidebar-link sub">Security</a>
+            <a href="#baseline-config" class="sidebar-link sub">Baseline Detection</a>
             <a href="#ai-config" class="sidebar-link sub">AI Features</a>
             <a href="#data-mapping" class="sidebar-link sub">Data Mapping</a>
             <a href="#env-vars" class="sidebar-link sub">Environment Variables</a>
@@ -872,7 +875,7 @@
 
                 <h3>Install &amp; Run</h3>
                 <div class="code-label">Terminal</div>
-                <pre><code><span class="prompt">$</span> <span class="cmd">git clone https://github.com/velum/velum.git</span>
+                <pre><code><span class="prompt">$</span> <span class="cmd">git clone https://github.com/gokulnair2001/Velum.git</span>
 <span class="prompt">$</span> <span class="cmd">cd velum</span>
 <span class="prompt">$</span> <span class="cmd">go mod tidy</span>
 <span class="prompt">$</span> <span class="cmd">cp example.config.yaml config.yaml</span>   <span class="comment"># edit with your Postgres credentials</span>
@@ -1276,7 +1279,7 @@ threshold = <span class="number">2.0</span>
             <!-- ══════════ PATTERNS ══════════ -->
             <section class="doc-section" id="patterns">
                 <h2><span class="section-icon">🎯</span> Detected Patterns</h2>
-                <p>Velum detects six behavioral anti-patterns across users. Detection is <strong>cross-instance</strong> — patterns are found across multiple flow instances per user for maximum accuracy.</p>
+                <p>Velum detects seven behavioral anti-patterns across users. Detection is <strong>cross-instance</strong> — patterns are found across multiple flow instances per user for maximum accuracy.</p>
 
                 <div class="pattern-grid">
                     <div class="pattern-item">
@@ -1321,12 +1324,43 @@ threshold = <span class="number">2.0</span>
                     </div>
                     <div class="pattern-item">
                         <div class="pattern-item-header">
-                            <span class="pattern-item-name">⏸ Hesitation</span>
+                            <span class="pattern-item-name">⏭ Bypass Behavior</span>
                             <span class="pattern-item-threshold" style="color:var(--blue);background:var(--blue-dim);">Signal</span>
                         </div>
-                        <p>Long pauses before critical actions. Indicates doubt, anxiety, or hidden friction in the experience.</p>
-                        <div class="pattern-vis">usr-628: view → <span style="color:var(--orange)">47s pause</span> → exit</div>
+                        <p>Users skip expected steps in a flow. Indicates confusing UX or users finding shortcuts around intended journeys.</p>
+                        <div class="pattern-vis">usr-628: step 1 → <span style="color:var(--orange)">skip step 2</span> → step 3 → done</div>
                     </div>
+                    <div class="pattern-item">
+                        <div class="pattern-item-header">
+                            <span class="pattern-item-name">📉 Funnel Dropoff</span>
+                            <span class="pattern-item-threshold" style="color:var(--red);background:var(--red-dim);">Significant</span>
+                        </div>
+                        <p>Significant user loss between defined funnel steps. Indicates revenue-impacting friction in conversion flows.</p>
+                        <div class="pattern-vis">step 1: <span style="color:var(--green)">100 users</span> → step 2: <span style="color:var(--yellow)">40 users</span> → step 3: <span style="color:var(--red)">8 users</span></div>
+                    </div>
+                </div>
+
+                <h3 id="severity">Severity &amp; Significance</h3>
+                <p>Pattern <strong>severity</strong> is weighted by pattern type and flow intent:</p>
+
+                <table>
+                    <thead><tr><th>Pattern</th><th>Weight</th><th>Notes</th></tr></thead>
+                    <tbody>
+                        <tr><td>Retry Storm</td><td><code>1.0</code></td><td>Most impactful</td></tr>
+                        <tr><td>Masked Failure</td><td><code>0.9</code></td><td>Hidden friction</td></tr>
+                        <tr><td>Funnel Dropoff</td><td><code>0.8</code></td><td>Revenue impact</td></tr>
+                        <tr><td>Silent Abandonment</td><td><code>0.7</code></td><td>Lost engagement</td></tr>
+                        <tr><td>Early Dropoff</td><td><code>0.6</code></td><td>May be expected</td></tr>
+                        <tr><td>Confusion Loop</td><td><code>0.5</code></td><td>UX friction</td></tr>
+                        <tr><td>Bypass Behavior</td><td><code>0.4</code></td><td>Least impactful</td></tr>
+                    </tbody>
+                </table>
+
+                <p>Transactional flows get a <strong>1.5× multiplier</strong>; browse flows get <strong>0.7×</strong>.</p>
+
+                <div class="callout callout-info">
+                    <div class="callout-title">ℹ️ Low-Volume Guard</div>
+                    <p>Baseline <strong>significance</strong> is capped at <code>low</code> when affected users are below <code>min_affected_users</code> (default: 5). The pattern is still reported with <code>low_volume: true</code> so dashboards can filter or display it, but it won't trigger high-priority alerts on statistically thin data.</p>
                 </div>
             </section>
 
@@ -1349,6 +1383,7 @@ threshold = <span class="number">2.0</span>
                     <tbody>
                         <tr><td><code>X-Project-ID</code></td><td>Always</td><td>Project identifier (1–64 chars, alphanumeric/hyphens/underscores). Scopes storage.</td></tr>
                         <tr><td><code>X-Infra-Key</code></td><td>When <code>security.enabled: true</code></td><td>Raw API key (server compares SHA-256 hash)</td></tr>
+                        <tr><td><code>X-Update-Baseline</code></td><td>No</td><td><code>true</code> (default) = store snapshot to baseline. <code>false</code> = read-only analysis, no baseline mutation.</td></tr>
                     </tbody>
                 </table>
 
@@ -1443,6 +1478,69 @@ threshold = <span class="number">2.0</span>
 
                 <h3 id="ai-config">AI Features</h3>
                 <p>All three AI layers support any <strong>OpenAI-compatible API</strong> — <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer">Groq</a> (default), OpenAI, Together, Mistral, Fireworks, and more. The API URL is auto-resolved from the <code>provider</code> name.</p>
+
+                <h3 id="baseline-config">Baseline Detection</h3>
+                <div class="code-label">config.yaml</div>
+<pre><code><span class="key">baseline</span>:
+  <span class="key">window_days</span>: <span class="number">28</span>               <span class="comment"># Days of history for baseline computation</span>
+  <span class="key">min_days</span>: <span class="number">7</span>                   <span class="comment"># Minimum days before baseline is valid</span>
+  <span class="key">min_affected_users</span>: <span class="number">5</span>         <span class="comment"># Below this, significance is capped at "low"</span>
+  <span class="key">computation_mode</span>: <span class="string">"daily"</span>     <span class="comment"># "daily" (cached) or "always" (per-request)</span>
+  <span class="key">trend_threshold</span>: <span class="number">0.10</span>         <span class="comment"># 10% delta to flag increasing/decreasing</span>
+  <span class="key">high_significance_threshold</span>: <span class="number">0.15</span>  <span class="comment"># 15% delta for high significance</span>
+  <span class="key">std_deviation_multiplier</span>: <span class="number">2.0</span>      <span class="comment"># Multiplier for std-based significance</span></code></pre>
+
+                <p><code>min_affected_users</code> prevents low-volume patterns (e.g., 1 user with 100% impact ratio) from being flagged as high significance. Set to <code>1</code> to disable the guard.</p>
+
+                <h4>How Baseline Works</h4>
+                <p>Every analysis request:</p>
+                <ol>
+                    <li><strong>Detects patterns</strong> in the current batch (stateless, works for any time window)</li>
+                    <li><strong>Compares</strong> each pattern's impact ratio against the stored historical average (last <code>window_days</code>)</li>
+                    <li><strong>Stores</strong> the current snapshot via upsert — keyed on <code>(date, pattern_type, flow, context_key)</code></li>
+                </ol>
+
+                <table>
+                    <thead><tr><th>Baseline Status</th><th>Condition</th><th>Behavior</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>first_observation</code></td><td>0 historical snapshots</td><td>Stores snapshot, returns unknown trend</td></tr>
+                        <tr><td><code>insufficient_data</code></td><td>1–6 days of history</td><td>Stores snapshot, returns unknown trend</td></tr>
+                        <tr><td><code>sufficient</code></td><td>≥7 days of history</td><td>Computes avg + stddev, returns trend + significance</td></tr>
+                        <tr><td><code>out_of_window</code></td><td>Data older than 28 days</td><td>Skips storage and comparison entirely</td></tr>
+                    </tbody>
+                </table>
+
+                <p><strong>Trend</strong> is classified by delta percentage: ≥10% increase → <code>increasing</code>, ≥10% decrease → <code>decreasing</code>, otherwise <code>stable</code>.</p>
+                <p><strong>Significance</strong> uses standard deviation when available (<code>delta ≥ 2×stddev</code> → <code>high</code>), falls back to absolute threshold (<code>delta ≥ 0.15</code> → <code>high</code>). Capped at <code>low</code> when affected users &lt; <code>min_affected_users</code>.</p>
+
+                <h4>Data Ingestion Guidelines</h4>
+                <ul>
+                    <li><strong>Consistent windows:</strong> For meaningful baseline comparisons, send the same time window each ingestion (e.g., always a full day). Inconsistent window sizes produce different denominators, making ratio comparisons noisy.</li>
+                    <li><strong>No overlap:</strong> Avoid sending overlapping event batches for the same day. The last batch overwrites the snapshot (upsert), so overlapping batches cause the stored ratio to reflect only the last batch.</li>
+                    <li><strong>Re-processing:</strong> Sending the same complete batch again is safe — the upsert overwrites with identical values.</li>
+                    <li><strong>Ad-hoc analysis:</strong> For investigative queries with non-standard windows, use the <code>X-Update-Baseline: false</code> header to prevent polluting baseline history.</li>
+                </ul>
+
+                <h4>Retention &amp; Cleanup</h4>
+                <p>Snapshots are auto-deleted after <code>retention_days</code> (default: <strong>90 days</strong>). A background goroutine runs cleanup on startup and every 24 hours.</p>
+
+                <div class="code-label">config.yaml</div>
+<pre><code><span class="key">storage</span>:
+  <span class="key">retention_days</span>: <span class="number">90</span>    <span class="comment"># Snapshots older than this are deleted</span></code></pre>
+
+                <table>
+                    <thead><tr><th>Time Boundary</th><th>Default</th><th>Purpose</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>baseline.window_days</code></td><td>28 days</td><td>How far back to look for comparison</td></tr>
+                        <tr><td><code>baseline.min_days</code></td><td>7 days</td><td>Minimum history before comparison is valid</td></tr>
+                        <tr><td><code>storage.retention_days</code></td><td>90 days</td><td>When data is permanently deleted</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="callout callout-tip">
+                    <div class="callout-title">💡 Retention gap</div>
+                    <p>The 62-day gap between <code>window_days</code> and <code>retention_days</code> means historical snapshots are preserved in case you widen the baseline window later.</p>
+                </div>
 
                 <div class="code-label">Groq (default — just set the key)</div>
 <pre><code><span class="key">ai_analyzer</span>:
