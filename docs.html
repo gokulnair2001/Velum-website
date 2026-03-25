@@ -852,7 +852,7 @@
                     <a href="#api" class="doc-hero-card" style="text-decoration:none;color:inherit;">
                         <div class="doc-hero-card-icon">🔌</div>
                         <h4>API Reference</h4>
-                        <p>Single endpoint. Send events, get back patterns and AI analysis.</p>
+                        <p>Send events, get back patterns and AI analysis. Optional baseline endpoint for trend tracking.</p>
                     </a>
                     <a href="#pipeline" class="doc-hero-card" style="text-decoration:none;color:inherit;">
                         <div class="doc-hero-card-icon">🧠</div>
@@ -932,6 +932,15 @@
                     <div class="callout-title">ℹ️ Schema Freedom</div>
                     <p>Velum auto-detects which field is the event name, user ID, timestamp, etc. You don't need to configure your schema — the Context Enricher (Layer 0) handles it via AI.</p>
                 </div>
+
+                <h3>Optional: Build a Baseline</h3>
+                <p>Want trend comparisons ("retry storms increased 21% vs. last 28 days")? Feed historical events to <code>/api/v1/baseline</code> first. Without this step, <code>/analyze</code> still detects all patterns — you just won't get trend data.</p>
+
+                <div class="code-label">cURL</div>
+                <pre><code><span class="prompt">$</span> <span class="cmd">curl -X POST http://localhost:8080/api/v1/baseline \</span>
+  <span class="cmd">-H</span> <span class="string">"Content-Type: application/json"</span> <span class="cmd">\</span>
+  <span class="cmd">-H</span> <span class="string">"X-Project-ID: my-app"</span> <span class="cmd">\</span>
+  <span class="cmd">-d @historical_events.json</span></code></pre>
             </section>
 
             <!-- ══════════ PIPELINE ══════════ -->
@@ -1373,9 +1382,15 @@ threshold = <span class="number">2.0</span>
                     <thead><tr><th>Method</th><th>Path</th><th>Auth</th><th>Description</th></tr></thead>
                     <tbody>
                         <tr><td><code>GET</code></td><td><code>/health</code></td><td>None</td><td>Health check (DB connectivity)</td></tr>
-                        <tr><td><code>POST</code></td><td><code>/api/v1/analyze</code></td><td><code>X-Infra-Key</code></td><td>Analyze events</td></tr>
+                        <tr><td><code>POST</code></td><td><code>/api/v1/analyze</code></td><td><code>X-Infra-Key</code></td><td>Analyze events against stored baselines (read-only, no baseline writes)</td></tr>
+                        <tr><td><code>POST</code></td><td><code>/api/v1/baseline</code></td><td><code>X-Infra-Key</code></td><td>Ingest events and store baseline snapshots (optional — enables trend comparison)</td></tr>
                     </tbody>
                 </table>
+
+                <div class="callout callout-tip">
+                    <div class="callout-title">💡 Two endpoints, one required</div>
+                    <p><code>/api/v1/analyze</code> is the core endpoint — it detects all patterns in your event batch and works standalone. <code>/api/v1/baseline</code> is optional — feed it historical data (on a schedule or as a one-time backfill) so that <code>/analyze</code> can compare current patterns against past trends and report whether things are getting better or worse.</p>
+                </div>
 
                 <h3>Headers</h3>
                 <table>
@@ -1383,7 +1398,6 @@ threshold = <span class="number">2.0</span>
                     <tbody>
                         <tr><td><code>X-Project-ID</code></td><td>Always</td><td>Project identifier (1–64 chars, alphanumeric/hyphens/underscores). Scopes storage.</td></tr>
                         <tr><td><code>X-Infra-Key</code></td><td>When <code>security.enabled: true</code></td><td>Raw API key (server compares SHA-256 hash)</td></tr>
-                        <tr><td><code>X-Update-Baseline</code></td><td>No</td><td><code>true</code> (default) = store snapshot to baseline. <code>false</code> = read-only analysis, no baseline mutation.</td></tr>
                     </tbody>
                 </table>
 
@@ -1518,7 +1532,7 @@ threshold = <span class="number">2.0</span>
                     <li><strong>Consistent windows:</strong> For meaningful baseline comparisons, send the same time window each ingestion (e.g., always a full day). Inconsistent window sizes produce different denominators, making ratio comparisons noisy.</li>
                     <li><strong>No overlap:</strong> Avoid sending overlapping event batches for the same day. The last batch overwrites the snapshot (upsert), so overlapping batches cause the stored ratio to reflect only the last batch.</li>
                     <li><strong>Re-processing:</strong> Sending the same complete batch again is safe — the upsert overwrites with identical values.</li>
-                    <li><strong>Ad-hoc analysis:</strong> For investigative queries with non-standard windows, use the <code>X-Update-Baseline: false</code> header to prevent polluting baseline history.</li>
+                    <li><strong>Ad-hoc analysis:</strong> The <code>/api/v1/analyze</code> endpoint never writes to baseline history, so investigative queries with non-standard windows are always safe.</li>
                 </ul>
 
                 <h4>Retention &amp; Cleanup</h4>
