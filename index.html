@@ -566,6 +566,169 @@
             border-left: 2px solid var(--red);
         }
 
+        /* ── COMPARE SECTION ── */
+        .compare-section {
+            padding: 8rem 2rem;
+            position: relative;
+        }
+
+        .compare-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .compare-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .compare-header .mono-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--orange);
+            margin-bottom: 1rem;
+        }
+
+        .compare-header h2 {
+            font-size: clamp(1.8rem, 3.5vw, 2.75rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+
+        .compare-table {
+            display: grid;
+            grid-template-columns: 200px 1fr 1fr 1fr;
+            border: 1px solid var(--gray-2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .compare-table-header {
+            background: var(--gray-1);
+            padding: 1.5rem 1.25rem;
+            border-bottom: 2px solid var(--gray-2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-align: center;
+        }
+
+        .compare-table-header:not(:last-child) {
+            border-right: 1px solid var(--gray-2);
+        }
+
+        .compare-table-header.velum-col {
+            background: rgba(255,107,53,0.05);
+            border-bottom-color: var(--orange);
+        }
+
+        .compare-logo {
+            height: 28px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0.7;
+        }
+
+        .compare-logo.velum-logo { opacity: 1; }
+
+        .compare-logo svg {
+            height: 24px;
+            width: auto;
+        }
+
+        .compare-logo-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .compare-logo-name.dim { color: var(--gray-5); }
+
+        .compare-row-label {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--gray-2);
+            border-right: 1px solid var(--gray-2);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--gray-5);
+            display: flex;
+            align-items: center;
+            background: var(--gray-1);
+        }
+
+        .compare-cell {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--gray-2);
+            border-right: 1px solid var(--gray-2);
+            font-size: 0.8rem;
+            color: var(--gray-5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .compare-cell:nth-child(4n) {
+            border-right: none;
+        }
+
+        .compare-cell.velum-col {
+            background: rgba(255,107,53,0.02);
+        }
+
+        .compare-cell .check {
+            color: var(--green);
+            font-size: 1.1rem;
+        }
+
+        .compare-cell .cross {
+            color: var(--gray-3);
+            font-size: 1.1rem;
+        }
+
+        .compare-cell .partial {
+            color: var(--yellow);
+            font-size: 0.7rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .compare-cell .velum-check {
+            color: var(--orange);
+            font-size: 1.1rem;
+        }
+
+        .compare-bottom {
+            text-align: center;
+            margin-top: 2.5rem;
+        }
+
+        .compare-bottom p {
+            font-size: 0.95rem;
+            color: var(--gray-5);
+            line-height: 1.7;
+        }
+
+        .compare-bottom strong {
+            color: var(--white);
+        }
+
+        @media (max-width: 768px) {
+            .compare-table {
+                grid-template-columns: 140px 1fr 1fr 1fr;
+            }
+            .compare-row-label, .compare-cell, .compare-table-header {
+                padding: 0.75rem 0.75rem;
+                font-size: 0.7rem;
+            }
+        }
+
         /* ── PATTERNS ── */
         .patterns-section {
             padding: 8rem 2rem;
@@ -988,6 +1151,264 @@
             color: var(--white);
         }
 
+        /* ── AGENTIC ── */
+        .agentic-section {
+            padding: 8rem 2rem;
+            background: var(--black);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .agentic-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 800px;
+            height: 800px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(255,107,53,0.04) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .agentic-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Big statement */
+        .agentic-statement {
+            text-align: center;
+            margin-bottom: 4.5rem;
+        }
+
+        .agentic-statement .mono-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--orange);
+            margin-bottom: 1.5rem;
+        }
+
+        .agentic-tagline {
+            font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            margin-bottom: 1.25rem;
+        }
+
+        .agentic-tagline .dim { color: var(--gray-3); }
+        .agentic-tagline .accent { color: var(--orange); }
+
+        .agentic-sub {
+            font-size: 1.05rem;
+            color: var(--gray-5);
+            max-width: 480px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* 3-step flow */
+        .agent-flow {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr auto 1fr;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 3.5rem;
+        }
+
+        .agent-step {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            border: 1px solid var(--gray-2);
+            background: var(--gray-1);
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .agent-step:hover {
+            border-color: var(--gray-3);
+            transform: translateY(-3px);
+        }
+
+        .agent-step-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            color: var(--gray-4);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 0.75rem;
+        }
+
+        .agent-step-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .agent-step-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .agent-step-desc {
+            font-size: 0.8rem;
+            color: var(--gray-5);
+            line-height: 1.6;
+        }
+
+        .agent-step-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--orange);
+            background: var(--orange-dim);
+            padding: 0.35rem 0.7rem;
+            margin-top: 0.85rem;
+            display: inline-block;
+        }
+
+        .agent-step.velum-step {
+            border-color: rgba(255,107,53,0.25);
+            background: rgba(255,107,53,0.03);
+        }
+
+        .agent-step.velum-step:hover {
+            border-color: rgba(255,107,53,0.5);
+        }
+
+        .agent-arrow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 0.75rem;
+        }
+
+        .agent-arrow-line {
+            width: 40px;
+            height: 2px;
+            background: var(--gray-3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .agent-arrow-line::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -20px;
+            width: 20px;
+            height: 100%;
+            background: linear-gradient(to right, transparent, var(--orange));
+            animation: arrowFlow 1.5s linear infinite;
+        }
+
+        @keyframes arrowFlow {
+            0% { left: -20px; }
+            100% { left: 100%; }
+        }
+
+        .agent-arrow-tip {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--orange);
+        }
+
+        /* Action cards — big and bold */
+        .agent-outcomes {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .agent-outcome {
+            border: 1px solid var(--gray-2);
+            background: var(--gray-1);
+            padding: 1.25rem 1rem;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .agent-outcome:hover {
+            border-color: var(--gray-3);
+            transform: translateY(-3px);
+        }
+
+        .agent-outcome::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--green);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .agent-outcome:hover::before {
+            opacity: 1;
+        }
+
+        .agent-outcome-icon {
+            font-size: 1.35rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .agent-outcome-name {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .agent-outcome-tools {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.58rem;
+            color: var(--gray-4);
+        }
+
+        @media (max-width: 1024px) {
+            .agent-flow {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            .agent-arrow {
+                padding: 0.75rem 0;
+                flex-direction: row;
+                gap: 0.5rem;
+            }
+            .agent-arrow-line {
+                width: 2px;
+                height: 30px;
+            }
+            .agent-arrow-line::after {
+                width: 100%;
+                height: 15px;
+                background: linear-gradient(to bottom, transparent, var(--orange));
+                animation: arrowFlowV 1.5s linear infinite;
+                left: 0;
+                top: -15px;
+            }
+            @keyframes arrowFlowV {
+                0% { top: -15px; }
+                100% { top: 100%; }
+            }
+            .agent-arrow-tip { transform: rotate(90deg); }
+            .agent-outcomes {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .agent-outcomes {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* ── CTA ── */
         .cta-section {
             padding: 10rem 2rem;
@@ -1159,7 +1580,8 @@
             .pain-section,
             .patterns-section,
             .pipeline-section,
-            .deploy-section {
+            .deploy-section,
+            .agentic-section {
                 padding: 5rem 1.5rem;
             }
 
@@ -1186,8 +1608,11 @@
     <nav>
         <div class="logo">velum_</div>
         <div class="nav-links">
+            <a href="docs.html">Docs</a>
             <a href="#how">How it works</a>
             <a href="#deploy">Deploy</a>
+            <a href="faq.html">FAQ</a>
+            <a href="https://github.com/gokulnair2001/Velum" target="_blank" rel="noopener noreferrer">GitHub</a>
             <a href="https://app.youform.com/forms/qxrxlzlp" target="_blank" class="nav-cta">Get Access →</a>
         </div>
     </nav>
@@ -1205,9 +1630,9 @@
         </p>
         <div class="hero-actions">
             <a href="https://app.youform.com/forms/qxrxlzlp" target="_blank" class="btn-primary">Request Early Access</a>
-            <a href="#chaos" class="btn-ghost">See the difference ↓</a>
+            <a href="https://github.com/gokulnair2001/Velum" target="_blank" rel="noopener noreferrer" class="btn-ghost">View on GitHub →</a>
         </div>
-        <p class="hero-note">Self-hosted or cloud &nbsp;·&nbsp; One API call &nbsp;·&nbsp; AI-powered summaries</p>
+        <p class="hero-note">Self-hosted or cloud &nbsp;·&nbsp; One API call &nbsp;·&nbsp; AI-powered summaries &nbsp;·&nbsp; Agent-ready</p>
     </section>
 
     <!-- ─── CHAOS → CLARITY VISUALIZATION ─── -->
@@ -1394,6 +1819,97 @@
         </div>
     </section>
 
+    <!-- ─── VELUM DIFFERENCE ─── -->
+    <section class="compare-section">
+        <div class="compare-inner">
+            <div class="compare-header reveal">
+                <div class="mono-label">What makes Velum different</div>
+                <h2>They tell you <em>what</em> happened.<br>Velum tells you <span style="color:var(--orange);">why.</span></h2>
+            </div>
+
+            <div class="compare-table reveal">
+                <!-- Header row -->
+                <div class="compare-table-header" style="background:transparent;border-bottom-color:var(--gray-2);"></div>
+                <div class="compare-table-header">
+                    <div class="compare-logo">
+                        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--gray-5)"/></svg>
+                    </div>
+                    <span class="compare-logo-name dim">Amplitude · Mixpanel</span>
+                </div>
+                <div class="compare-table-header">
+                    <div class="compare-logo">
+                        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5" style="color:var(--gray-5)"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="color:var(--gray-5)"/></svg>
+                    </div>
+                    <span class="compare-logo-name dim">PostHog · Hotjar</span>
+                </div>
+                <div class="compare-table-header velum-col">
+                    <div class="compare-logo velum-logo">
+                        <svg viewBox="0 0 28 28"><rect width="28" height="28" rx="5" fill="var(--orange)"/><text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" font-weight="700" fill="var(--black)">v_</text></svg>
+                    </div>
+                    <span class="compare-logo-name" style="color:var(--orange);">Velum</span>
+                </div>
+
+                <!-- Row: Event counting -->
+                <div class="compare-row-label">Event counting &amp; funnels</div>
+                <div class="compare-cell"><span class="check">✓</span></div>
+                <div class="compare-cell"><span class="check">✓</span></div>
+                <div class="compare-cell velum-col"><span class="velum-check">✓</span></div>
+
+                <!-- Row: Session replay -->
+                <div class="compare-row-label">Session replay</div>
+                <div class="compare-cell"><span class="cross">—</span></div>
+                <div class="compare-cell"><span class="check">✓</span></div>
+                <div class="compare-cell velum-col"><span class="cross">—</span></div>
+
+                <!-- Row: Behavioral pattern detection -->
+                <div class="compare-row-label">Behavioral pattern detection</div>
+                <div class="compare-cell"><span class="cross">—</span></div>
+                <div class="compare-cell"><span class="cross">—</span></div>
+                <div class="compare-cell velum-col"><span class="velum-check">✓</span></div>
+
+                <!-- Row: Explains why -->
+                <div class="compare-row-label">Explains <em>why</em> users struggle</div>
+                <div class="compare-cell"><span class="cross">—</span></div>
+                <div class="compare-cell"><span class="partial">manual</span></div>
+                <div class="compare-cell velum-col"><span class="velum-check">✓</span></div>
+
+                <!-- Row: Works across all users -->
+                <div class="compare-row-label">Cross-user analysis at scale</div>
+                <div class="compare-cell"><span class="check">✓</span></div>
+                <div class="compare-cell"><span class="cross">—</span></div>
+                <div class="compare-cell velum-col"><span class="velum-check">✓</span></div>
+
+                <!-- Row: Zero config -->
+                <div class="compare-row-label">Zero config / schema-free</div>
+                <div class="compare-cell"><span class="cross">—</span></div>
+                <div class="compare-cell"><span class="cross">—</span></div>
+                <div class="compare-cell velum-col"><span class="velum-check">✓</span></div>
+
+                <!-- Row: AI-powered root cause -->
+                <div class="compare-row-label">AI root cause hypotheses</div>
+                <div class="compare-cell"><span class="cross">—</span></div>
+                <div class="compare-cell"><span class="cross">—</span></div>
+                <div class="compare-cell velum-col"><span class="velum-check">✓</span></div>
+
+                <!-- Row: Self-hostable -->
+                <div class="compare-row-label">Self-hostable &amp; open source</div>
+                <div class="compare-cell"><span class="cross">—</span></div>
+                <div class="compare-cell"><span class="check">✓</span></div>
+                <div class="compare-cell velum-col"><span class="velum-check">✓</span></div>
+
+                <!-- Row: Agent-ready -->
+                <div class="compare-row-label">Agent-ready API</div>
+                <div class="compare-cell"><span class="cross">—</span></div>
+                <div class="compare-cell"><span class="cross">—</span></div>
+                <div class="compare-cell velum-col"><span class="velum-check">✓</span></div>
+            </div>
+
+            <div class="compare-bottom reveal">
+                <p>Velum doesn't replace your analytics stack — it <strong>complements it</strong>.<br>Feed it the same events you already track. Get back the <em>why</em> behind every metric.</p>
+            </div>
+        </div>
+    </section>
+
     <!-- ─── PIPELINE ─── -->
     <section class="pipeline-section" id="how">
         <div class="pipeline-inner">
@@ -1455,6 +1971,84 @@
         </div>
     </section>
 
+    <!-- ─── AGENTIC ─── -->
+    <section class="agentic-section" id="agentic">
+        <div class="agentic-inner">
+
+            <!-- Big bold statement -->
+            <div class="agentic-statement reveal">
+                <div class="mono-label">Agent-Ready</div>
+                <h2 class="agentic-tagline">
+                    One endpoint.<br>
+                    <span class="accent">Every</span> <span class="dim">agent.</span>
+                </h2>
+                <p class="agentic-sub">Your AI agent sends events, Velum returns structured patterns and hypotheses. The agent decides what to do next.</p>
+            </div>
+
+            <!-- 3-step flow -->
+            <div class="agent-flow reveal">
+                <div class="agent-step">
+                    <div class="agent-step-num">Step 1</div>
+                    <div class="agent-step-icon">🤖</div>
+                    <div class="agent-step-title">Agent calls</div>
+                    <div class="agent-step-desc">Your agent sends raw product events to Velum via HTTP POST.</div>
+                    <div class="agent-step-code">POST /api/v1/analyze</div>
+                </div>
+
+                <div class="agent-arrow">
+                    <div class="agent-arrow-line"></div>
+                    <span class="agent-arrow-tip">→</span>
+                </div>
+
+                <div class="agent-step velum-step">
+                    <div class="agent-step-num">Step 2</div>
+                    <div class="agent-step-icon" style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--orange);">v_</div>
+                    <div class="agent-step-title">Velum analyzes</div>
+                    <div class="agent-step-desc">8-layer pipeline detects retry storms, confusion loops, silent abandonment — returns structured JSON.</div>
+                    <div class="agent-step-code">severity: 0.96 · 847 users</div>
+                </div>
+
+                <div class="agent-arrow">
+                    <div class="agent-arrow-line"></div>
+                    <span class="agent-arrow-tip">→</span>
+                </div>
+
+                <div class="agent-step">
+                    <div class="agent-step-num">Step 3</div>
+                    <div class="agent-step-icon">⚡</div>
+                    <div class="agent-step-title">Agent acts</div>
+                    <div class="agent-step-desc">Parse the JSON, make decisions. File tickets, trigger alerts, toggle feature flags — automatically.</div>
+                    <div class="agent-step-code">create_ticket(pattern)</div>
+                </div>
+            </div>
+
+            <!-- What agents can do — compact outcome cards -->
+            <div class="agent-outcomes reveal">
+                <div class="agent-outcome">
+                    <div class="agent-outcome-icon">🎫</div>
+                    <div class="agent-outcome-name">File Tickets</div>
+                    <div class="agent-outcome-tools">jira · linear · github</div>
+                </div>
+                <div class="agent-outcome">
+                    <div class="agent-outcome-icon">🚨</div>
+                    <div class="agent-outcome-name">Trigger Alerts</div>
+                    <div class="agent-outcome-tools">slack · pagerduty · opsgenie</div>
+                </div>
+                <div class="agent-outcome">
+                    <div class="agent-outcome-icon">🎛</div>
+                    <div class="agent-outcome-name">Toggle Features</div>
+                    <div class="agent-outcome-tools">launchdarkly · flags</div>
+                </div>
+                <div class="agent-outcome">
+                    <div class="agent-outcome-icon">📊</div>
+                    <div class="agent-outcome-name">Feed Dashboards</div>
+                    <div class="agent-outcome-tools">grafana · datadog</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
     <!-- ─── DEPLOY OPTIONS ─── -->
     <section class="deploy-section" id="deploy">
         <div class="deploy-inner">
@@ -1476,7 +2070,7 @@
                         <li>Docker, Kubernetes, or bare metal</li>
                     </ul>
                     <div class="deploy-code">
-                        <span class="prompt">$</span> <span class="cmd">git clone https://github.com/your-org/velum.git</span><br>
+                        <span class="prompt">$</span> <span class="cmd">git clone https://github.com/gokulnair2001/Velum.git</span><br>
                         <span class="prompt">$</span> <span class="cmd">cp example.config.yaml config.yaml</span><br>
                         <span class="prompt">$</span> <span class="cmd">go run cmd/velum/main.go</span><br>
                         <span style="color: var(--green);">✓ velum listening on :8080</span>
@@ -1484,7 +2078,8 @@
                 </div>
                 <div class="deploy-card reveal">
                     <span class="deploy-card-badge cloud">Velum Cloud</span>
-                    <h3>Zero-ops, fully managed</h3>
+                    <h3>Zero-ops, fully managed <span style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--orange);background:var(--orange-dim);padding:0.2rem 0.6rem;margin-left:0.5rem;vertical-align:middle;letter-spacing:0.05em;text-transform:uppercase;">Coming Soon</span></h3>
+                    <p style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--orange);margin-bottom:0.5rem;">Private Beta — April 2026</p>
                     <p>We handle the infrastructure, scaling, and upgrades. You send events, we return insights.</p>
                     <ul class="deploy-features">
                         <li>No servers to manage — just an API endpoint</li>
@@ -1493,11 +2088,8 @@
                         <li>Historical pattern storage and trend analysis</li>
                         <li>Deeper analysis with richer, more detailed results</li>
                     </ul>
-                    <div class="deploy-code">
-                        <span class="prompt">$</span> <span class="cmd">curl -X POST https://api.velum.dev/v1/analyze \</span><br>
-                        <span class="cmd">&nbsp;&nbsp;-H "X-Project-ID: my-app" \</span><br>
-                        <span class="cmd">&nbsp;&nbsp;-H "Authorization: Bearer vl_..." \</span><br>
-                        <span class="cmd">&nbsp;&nbsp;-d '{"events": [...]}'</span>
+                    <div style="margin-top:1.5rem;">
+                        <a href="https://app.youform.com/forms/qxrxlzlp" target="_blank" class="btn-primary" style="display:inline-block;font-size:0.8rem;padding:0.85rem 1.75rem;">Register for Cloud Access →</a>
                     </div>
                 </div>
             </div>
@@ -1529,12 +2121,12 @@
     <!-- ─── CTA ─── -->
     <section class="cta-section" id="waitlist">
         <div class="cta-content">
-            <div class="cta-label">Private Beta — March 2026</div>
+            <div class="cta-label">Open Source</div>
             <h2 class="cta-title">Stop guessing.<br>Start hearing.</h2>
             <p class="cta-desc">Your events already know what's wrong. Let Velum translate them into patterns, causes, and fixes.</p>
             <div class="cta-buttons">
                 <a href="https://app.youform.com/forms/qxrxlzlp" target="_blank" class="btn-primary">Request Early Access</a>
-                <a href="#deploy" class="btn-ghost">Self-host it →</a>
+                <a href="https://github.com/gokulnair2001/Velum" target="_blank" rel="noopener noreferrer" class="btn-ghost">View on GitHub →</a>
             </div>
             <p class="cta-note">Free during beta &nbsp;·&nbsp; Direct onboarding support &nbsp;·&nbsp; Shape the roadmap</p>
         </div>
@@ -1544,11 +2136,14 @@
     <footer>
         <div class="footer-left">
             <div class="footer-logo">velum_</div>
-            <div class="footer-copy">© 2026 Velum. All rights reserved.</div>
+            <div class="footer-copy">© 2026 Velum. MIT License.</div>
         </div>
         <div class="footer-links">
+            <a href="docs.html">Docs</a>
             <a href="#how">How it works</a>
             <a href="#deploy">Deploy</a>
+            <a href="faq.html">FAQ</a>
+            <a href="https://github.com/gokulnair2001/Velum" target="_blank" rel="noopener noreferrer">GitHub</a>
             <a href="https://app.youform.com/forms/qxrxlzlp" target="_blank">Request Access</a>
             <a href="https://x.com/VelumHQ" target="_blank" rel="noopener noreferrer">𝕏</a>
         </div>

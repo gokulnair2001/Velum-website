@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velum — FAQ</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' ry='6' fill='%23fafafa'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui, sans-serif' font-size='14' font-weight='700' fill='%230a0a0a'%3Ev_%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #050505;
+            --white: #f5f5f5;
+            --orange: #ff6b35;
+            --orange-dim: rgba(255, 107, 53, 0.12);
+            --gray-1: #111;
+            --gray-2: #1e1e1e;
+            --gray-3: #333;
+            --gray-4: #666;
+            --gray-5: #999;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        ::selection { background: var(--orange); color: var(--black); }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--black); }
+        ::-webkit-scrollbar-thumb { background: var(--gray-3); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--orange); }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(5,5,5,0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--gray-5);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--white); }
+
+        .nav-cta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.6rem 1.25rem;
+            background: var(--orange);
+            border: none;
+            color: var(--black);
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .nav-cta:hover { background: var(--white); }
+
+        /* ── PAGE HEADER ── */
+        .page-header {
+            padding: 10rem 2rem 4rem;
+            text-align: center;
+        }
+
+        .page-header .mono-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--orange);
+            margin-bottom: 1rem;
+        }
+
+        .page-header h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.75rem;
+        }
+
+        .page-header p {
+            color: var(--gray-5);
+            max-width: 500px;
+            margin: 0 auto;
+            font-size: 1rem;
+        }
+
+        /* ── FAQ ── */
+        .faq-section {
+            padding: 2rem 2rem 8rem;
+        }
+
+        .faq-inner {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--gray-2);
+        }
+
+        .faq-item:first-child {
+            border-top: 1px solid var(--gray-2);
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 0;
+            cursor: pointer;
+            gap: 1rem;
+        }
+
+        .faq-question h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .faq-toggle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem;
+            color: var(--gray-4);
+            flex-shrink: 0;
+            transition: transform 0.3s, color 0.3s;
+            user-select: none;
+        }
+
+        .faq-item.open .faq-toggle {
+            transform: rotate(45deg);
+            color: var(--orange);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease, padding 0.35s ease;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 300px;
+        }
+
+        .faq-answer p {
+            font-size: 0.88rem;
+            color: var(--gray-5);
+            line-height: 1.7;
+            padding-bottom: 1.25rem;
+        }
+
+        .faq-answer code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            background: var(--gray-2);
+            padding: 0.1rem 0.35rem;
+            border-radius: 3px;
+            color: var(--orange);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            padding: 3rem;
+            border-top: 1px solid var(--gray-2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-left { font-family: 'JetBrains Mono', monospace; }
+
+        .footer-logo {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .footer-copy {
+            font-size: 0.65rem;
+            color: var(--gray-4);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--gray-4);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover { color: var(--white); }
+
+        /* ── REVEAL ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 1rem 1.5rem; }
+            .nav-links a:not(.nav-cta) { display: none; }
+            .faq-section { padding: 2rem 1.5rem 5rem; }
+            footer {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+                padding: 2rem;
+            }
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ─── NAV ─── -->
+    <nav>
+        <a href="index.html" class="logo">velum_</a>
+        <div class="nav-links">
+            <a href="docs.html">Docs</a>
+            <a href="index.html#how">How it works</a>
+            <a href="index.html#deploy">Deploy</a>
+            <a href="https://github.com/gokulnair2001/Velum" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://app.youform.com/forms/qxrxlzlp" target="_blank" class="nav-cta">Get Access →</a>
+        </div>
+    </nav>
+
+    <!-- ─── HEADER ─── -->
+    <div class="page-header">
+        <div class="mono-label">FAQ</div>
+        <h1>Common questions</h1>
+        <p>Everything you need to know about Velum — from setup to production.</p>
+    </div>
+
+    <!-- ─── FAQ ─── -->
+    <section class="faq-section">
+        <div class="faq-inner">
+
+            <div class="faq-item reveal">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>Does it work alongside my existing analytics?</h3>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes. Velum complements tools like Amplitude, Mixpanel, and PostHog — it doesn't replace them. Feed it the same events you already track. Velum adds a behavioral layer on top: detecting patterns like retry storms, silent abandonments, and confusion loops that funnel metrics alone can't surface.</p>
+                </div>
+            </div>
+
+            <div class="faq-item reveal">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>What LLMs does it support?</h3>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Any OpenAI-compatible API. <code>Groq</code> is the default (free tier available), but you can use OpenAI, Together, Mistral, Fireworks, or self-hosted models like Ollama and vLLM. Just set the <code>provider</code> and <code>api_key</code> in config. AI is optional — the core pattern detection is fully deterministic.</p>
+                </div>
+            </div>
+
+            <div class="faq-item reveal">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>How much data can it handle?</h3>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Velum processes event batches per API call — send hundreds to thousands of events per request. The pipeline is stateless and fast: pattern detection is deterministic (no LLM calls), and AI layers only fire for unknown vocab and final summaries. PostgreSQL handles baseline storage. It's built for production traffic.</p>
+                </div>
+            </div>
+
+            <div class="faq-item reveal">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>Is my data sent anywhere?</h3>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>When self-hosted, nothing leaves your network. Your events stay in your PostgreSQL database. The only external calls are to your configured LLM provider (Groq, OpenAI, etc.) for AI features — and those are optional. Velum has no telemetry, no analytics, no phone-home.</p>
+                </div>
+            </div>
+
+            <div class="faq-item reveal">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>Do I need to define an event schema?</h3>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>No. Velum is truly zero-config. Send any JSON events and the Context Enricher (Layer 0) auto-detects which field is the event name, user ID, timestamp, etc. Event properties are automatically classified as dimensions, targets, conditions, or measures.</p>
+                </div>
+            </div>
+
+            <div class="faq-item reveal">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>Can I plug Velum into my AI agent?</h3>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Absolutely. Velum is a single <code>POST</code> endpoint that returns structured JSON — patterns, severity scores, confidence levels, and AI hypotheses. Your agent can call it, parse the response, and act on it: trigger alerts, file tickets, adjust feature flags, or feed results into other tools. No SDK, no UI interaction, no query language — just one API call and a machine-readable response.</p>
+                </div>
+            </div>
+
+            <div class="faq-item reveal">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>What license is Velum under?</h3>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>MIT. Fully open source, free to use, modify, and deploy commercially. No usage limits, no feature gates.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ─── FOOTER ─── -->
+    <footer>
+        <div class="footer-left">
+            <div class="footer-logo">velum_</div>
+            <div class="footer-copy">© 2026 Velum. MIT License.</div>
+        </div>
+        <div class="footer-links">
+            <a href="docs.html">Docs</a>
+            <a href="index.html#how">How it works</a>
+            <a href="index.html#deploy">Deploy</a>
+            <a href="https://github.com/gokulnair2001/Velum" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="https://app.youform.com/forms/qxrxlzlp" target="_blank">Request Access</a>
+            <a href="https://x.com/VelumHQ" target="_blank" rel="noopener noreferrer">𝕏</a>
+        </div>
+    </footer>
+
+    <script>
+        function toggleFaq(el) {
+            const item = el.parentElement;
+            const isOpen = item.classList.contains('open');
+            document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+            if (!isOpen) item.classList.add('open');
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
