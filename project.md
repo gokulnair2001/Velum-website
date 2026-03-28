@@ -1,4 +1,4 @@
-# Velum — Project Overview
+# Velum — Product Healing Agent: Project Overview
 
 > **Purpose:** This file exists to give AI coding assistants and new contributors a complete understanding of the Velum codebase. It is gitignored and not shipped.
 
@@ -6,16 +6,16 @@
 
 ## What Is Velum?
 
-Velum is a **zero-config behavioral pattern detection engine** written in Go. You send it raw product analytics events (any domain — e-commerce, ride-hailing, streaming, fintech) via a single POST endpoint, and it:
+Velum is the **Product Healing Agent** — a zero-config behavioral pattern detection engine written in Go that detects hidden UX friction and product gaps from real user behavior, then tells your team what to fix first. You send it raw product analytics events (any domain — e-commerce, ride-hailing, streaming, fintech) via a single POST endpoint, and it:
 
 1. **Learns your vocabulary** — classifies unknown words in event names via LLM (Groq)
 2. **Discovers your schema** — identifies which JSON field is the user ID, timestamp, event name, etc., via LLM
 3. **Normalizes events** — transforms raw JSON into a canonical internal format
 4. **Reconstructs sessions** — groups events into user sessions and flow instances
-5. **Tags behaviors** — detects retry, abandon, hesitation, exploration, success, failure
+5. **Tags behaviors** — detects explore, attempt, succeed, retry, abandon, hesitate, bypass, progress
 6. **Detects anti-patterns** — aggregates behaviors into patterns like retry storms, silent abandonment, confusion loops
 7. **Compares baselines** — tracks patterns historically and detects trends (increasing, decreasing, new)
-8. **Generates AI summaries** — produces natural-language analysis with hypotheses grounded in data
+8. **Diagnoses & recommends** — generates AI-powered analysis with prioritized product/UX healing recommendations
 
 All from a **single `POST /api/v1/analyze`** request with raw JSON events.
 
@@ -183,8 +183,8 @@ Raw JSON Events ([]map[string]interface{})
 ├─────────────────────────────────────────────────────────────────────┤
 │  Layer 4: Behavior Analyzer (behavior)   [ContextAwareLayer]        │
 │    • Analyzes each FlowInstance for behavioral signals:             │
-│      - explore, attempt, succeed, fail, retry, abandon, progress    │
-│      - hesitation (long pauses before actions)                      │
+│      - explore, attempt, succeed, retry, abandon, progress          │
+│      - hesitate (long pauses), bypass (skipped steps)               │
 │    • Classifies flow intent: "transact", "browse", "unknown"       │
 │    • Receives AnalysisContext metadata (scope, funnel definitions)  │
 │    • Always active                                                  │
@@ -216,7 +216,9 @@ Raw JSON Events ([]map[string]interface{})
 │      - Sample user journeys (actual event sequences)                │
 │      - Baseline comparison results                                  │
 │    • Strict system prompt: numbers required, no hallucination       │
-│    • Returns: summary, details[], hypotheses[], confidence_note     │
+│    • Diagnoses UX/product gaps and recommends prioritized fixes     │
+│    • Returns: summary, details[], hypotheses[], recommendations[],  │
+│              confidence_note                                        │
 │    • Optional — skipped if disabled or no API key                   │
 └─────────────────────────────────────────────────────────────────────┘
   │
@@ -278,6 +280,11 @@ When AI is enabled:
       "summary": "...",
       "details": ["..."],
       "hypotheses": ["..."],
+      "recommendations": [
+        "[HIGH] Specific, actionable product/UX fix for the highest-severity pattern.",
+        "[MEDIUM] Fix for the next pattern, citing data points.",
+        "[MONITOR] What to track and when to revisit."
+      ],
       "confidence_note": "..."
     }
   }
@@ -399,7 +406,7 @@ Enum: `dimension`, `target`, `condition`, `measure`
 | Behavior Analyzer   | `[]AnalyzedFlow`           | Flows tagged with behavioral signals           |
 | Pattern Detector    | `[]DetectedPattern`        | Aggregated anti-patterns across users          |
 | Baseline Comparator | `[]ChangeResult`           | Trend analysis vs history                      |
-| AI Analyzer         | `AIAnalysis`               | Natural language summary + hypotheses          |
+| AI Analyzer         | `AIAnalysis`               | NL summary + hypotheses + recommendations      |
 
 ---
 

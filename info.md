@@ -1,15 +1,15 @@
-# Velum — Architecture & Pipeline Deep Dive
+# Velum — Product Healing Agent: Architecture & Pipeline Deep Dive
 
 ## What is Velum?
 
-Velum is a **zero-config behavioral pattern detection engine**. You send raw product analytics events (any domain — e-commerce, ride-hailing, streaming, fintech), and Velum:
+Velum is the **Product Healing Agent** — a zero-config engine that detects hidden UX friction and product gaps from real user behavior, then tells your team what to fix first. You send raw product analytics events (any domain — e-commerce, ride-hailing, streaming, fintech), and Velum:
 
 1. Learns your vocabulary automatically
 2. Reconstructs user sessions and flows
 3. Tags behavioral signals (retry, abandon, explore, succeed...)
-4. Detects anti-patterns (retry storms, masked failures, silent abandonment...)
+4. Detects friction patterns (retry storms, masked failures, silent abandonment...)
 5. Compares against historical baselines
-6. Generates AI-powered natural language analysis
+6. Diagnoses product/UX gaps and recommends prioritized healing actions
 
 All from a **single POST request** with raw JSON events.
 
@@ -34,7 +34,7 @@ All from a **single POST request** with raw JSON events.
 │  Layer 4 ──► Behavior Analyzer (Flows → Behavioral Tags)    │
 │  Layer 5 ──► Pattern Detector (Behaviors → Anti-Patterns)   │
 │  Layer 6 ──► Baseline Comparator (Patterns → Trends)        │
-│  Layer 7 ──► AI Analyzer (Trends → Natural Language)        │
+│  Layer 7 ──► AI Analyzer (Trends → Diagnosis & Recommendations)  │
 │                                                             │
 └────────────────────────┬────────────────────────────────────┘
                          │
@@ -393,7 +393,7 @@ Result: NEW PATTERN — "retry_storm on booking observed for the first time, est
 
 **File:** `internal/layers/ai/groq.go`
 
-**Purpose:** Generates **natural language analysis** of detected patterns using Groq LLM.
+**Purpose:** Diagnoses product/UX gaps behind detected patterns and generates **prioritized healing recommendations** using Groq LLM.
 
 **How it works:**
 1. Collects all detected patterns + baseline comparisons
@@ -407,6 +407,7 @@ Result: NEW PATTERN — "retry_storm on booking observed for the first time, est
    - Numbers and percentages in every detail
    - Error codes must be cited
    - Hypotheses must reference specific data points
+   - Recommendations must be specific, actionable, and prioritized by severity
    - No generic filler like "requires further investigation"
 
 **Prompt structure:**
@@ -431,7 +432,11 @@ Pattern 1: retry_storm in playback flow
   "summary": "A retry storm affecting 42% of playback users...",
   "details": ["retry_storm in playback: 2 affected users out of 12 total. Error codes: buffer_timeout (2), drm_license_failed (3)..."],
   "hypotheses": ["DRM licensing may be broken for IN region — 3 of 5 failures are drm_license_failed on mobile"],
-  "confidence_note": "These are hypotheses based on observed behavioral changes."
+  "recommendations": [
+    "[HIGH] Add client-side DRM license retry with exponential backoff before surfacing error to user — 3 of 5 failures are drm_license_failed on mobile in IN.",
+    "[MONITOR] Track buffer_timeout rate by region over the next 7 days to determine if this is a transient CDN issue."
+  ],
+  "confidence_note": "These are evidence-grounded diagnoses and recommendations based on observed behavioral patterns."
 }
 ```
 
@@ -530,7 +535,11 @@ Layer 7 (AI Analyzer):
       "enabled": true,
       "summary": "Booking flow shows 75% retry storm rate due to driver cancellations...",
       "details": ["..."],
-      "hypotheses": ["Driver supply insufficient for long-distance Bangalore rides..."]
+      "hypotheses": ["Driver supply insufficient for long-distance Bangalore rides..."],
+      "recommendations": [
+        "[HIGH] Surface estimated wait time before booking confirmation for long-distance rides — 3 of 4 users experienced driver cancellation with cancel_reason=too_far.",
+        "[MEDIUM] Consider auto-expanding driver search radius for rides where fare exceeds ₹500 to reduce cancellation rate."
+      ]
     }
   }
 }
@@ -600,8 +609,8 @@ Raw Events (any schema, any domain)
 ┌──────────────────────────────┐
 │      AI Analyzer             │
 │  Patterns + Baselines +      │
-│  Event Evidence → Natural    │
-│  Language Analysis           │
+│  Event Evidence → Diagnosis  │
+│  & Healing Recommendations   │
 │  (Groq LLM, structured)     │
 └──────────────┬───────────────┘
                │
