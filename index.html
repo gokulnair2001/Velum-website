@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Velum — Product Healing Agent</title>
+    <title>Velum — Open Source Behavioral Analysis Engine</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' ry='6' fill='%23fafafa'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui, sans-serif' font-size='14' font-weight='700' fill='%230a0a0a'%3Ev_%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1409,6 +1409,132 @@
             }
         }
 
+        /* ── AGENTIC VISUAL ENHANCEMENT ── */
+        .agent-code-block {
+            background: var(--black);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 0.8rem 1rem;
+            margin-top: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.62rem;
+            line-height: 1.85;
+            text-align: left;
+            overflow-x: auto;
+            color: var(--gray-5);
+        }
+
+        .acb-key { color: #60a5fa; }
+        .acb-str { color: #7c9885; }
+        .acb-num { color: #b5935a; }
+        .acb-crit { color: var(--red); }
+        .acb-ok { color: var(--green); }
+        .acb-fn { color: var(--orange); }
+        .acb-dim { color: var(--gray-4); font-style: italic; }
+
+        .agent-step.velum-step {
+            border-color: rgba(255,107,53,0.35) !important;
+            background: rgba(255,107,53,0.04) !important;
+            box-shadow: 0 0 0 1px rgba(255,107,53,0.08), 0 0 40px rgba(255,107,53,0.07);
+        }
+
+        .agent-step.velum-step:hover {
+            border-color: rgba(255,107,53,0.55) !important;
+            box-shadow: 0 0 0 1px rgba(255,107,53,0.15), 0 0 50px rgba(255,107,53,0.12);
+        }
+
+        .velum-mark {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--orange);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .p-tick-row {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            margin: 0.9rem 0 0.5rem;
+        }
+
+        .p-tick {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--orange);
+            opacity: 0.18;
+        }
+
+        .p-tick.on {
+            opacity: 1;
+            animation: ptick 1.6s ease infinite;
+        }
+
+        .p-tick:nth-child(1).on { animation-delay: 0s; }
+        .p-tick:nth-child(2).on { animation-delay: 0.2s; }
+        .p-tick:nth-child(3).on { animation-delay: 0.4s; }
+        .p-tick:nth-child(4).on { animation-delay: 0.6s; }
+        .p-tick:nth-child(5).on { animation-delay: 0.8s; }
+        .p-tick:nth-child(6).on { animation-delay: 1.0s; }
+        .p-tick:nth-child(7).on { animation-delay: 1.2s; }
+        .p-tick:nth-child(8).on { animation-delay: 1.4s; }
+
+        @keyframes ptick {
+            0%, 75%, 100% { opacity: 1; }
+            37% { opacity: 0.12; }
+        }
+
+        .velum-stat-row {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.58rem;
+            color: var(--gray-4);
+            letter-spacing: 0.05em;
+        }
+
+        .agent-arrow-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.5rem;
+            color: var(--orange);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            opacity: 0.65;
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+        }
+
+        .agent-outcome {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .agent-outcome-bar {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .agent-outcome:hover .agent-outcome-bar { opacity: 1; }
+
+        .bar-blue   { background: #60a5fa; }
+        .bar-green  { background: var(--green); }
+        .bar-yellow { background: #fbbf24; }
+        .bar-orange { background: var(--orange); }
+
+        .agent-outcome-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.57rem;
+            color: var(--gray-4);
+            background: var(--black);
+            border: 1px solid rgba(255,255,255,0.04);
+            padding: 0.55rem 0.75rem;
+            margin-top: 0.75rem;
+            text-align: left;
+            line-height: 1.75;
+            overflow-x: auto;
+        }
+
         /* ── CTA ── */
         .cta-section {
             padding: 10rem 2rem;
@@ -1491,6 +1617,19 @@
             margin-bottom: 0.25rem;
         }
 
+        /* ── VERSION TAG ── */
+        .nav-version {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.58rem;
+            color: var(--orange);
+            background: var(--orange-dim);
+            border: 1px solid rgba(255,107,53,0.2);
+            padding: 0.15rem 0.45rem;
+            letter-spacing: 0.02em;
+            line-height: 1;
+            vertical-align: middle;
+        }
+
         .footer-copy {
             font-size: 0.65rem;
             color: var(--gray-4);
@@ -1522,6 +1661,56 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* ── HERO TERMINAL ── */
+        .hero-terminal {
+            max-width: 580px;
+            margin: 2rem auto 2.5rem;
+            background: var(--gray-1);
+            border: 1px solid var(--gray-2);
+            border-radius: 4px;
+            overflow: hidden;
+            text-align: left;
+        }
+
+        .hero-terminal-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.55rem 1rem;
+            border-bottom: 1px solid var(--gray-2);
+            background: rgba(255,255,255,0.02);
+        }
+
+        .hero-terminal-dot {
+            width: 8px; height: 8px;
+            background: var(--orange);
+            border-radius: 50%;
+        }
+
+        .hero-terminal-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.62rem;
+            color: var(--gray-4);
+            letter-spacing: 0.05em;
+        }
+
+        .hero-terminal-body {
+            padding: 1rem 1.25rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            line-height: 1.75;
+            overflow-x: auto;
+        }
+
+        .ht-prompt { color: var(--orange); }
+        .ht-cmd { color: var(--white); }
+        .ht-key { color: #60a5fa; }
+        .ht-str { color: #7c9885; }
+        .ht-num { color: #b5935a; }
+        .ht-critical { color: var(--red); }
+        .ht-ok { color: var(--green); }
+        .ht-dim { color: var(--gray-4); }
 
         /* ── CURSOR ── */
         .cursor-glow {
@@ -1606,33 +1795,59 @@
 
     <!-- ─── NAV ─── -->
     <nav>
-        <div class="logo">velum_</div>
+        <div style="display:flex;align-items:center;gap:0.6rem;">
+            <div class="logo">velum_</div>
+            <span class="nav-version version-tag">v0.2.0</span>
+        </div>
         <div class="nav-links">
             <a href="docs.html">Docs</a>
             <a href="#how">How it works</a>
             <a href="#deploy">Deploy</a>
             <a href="faq.html">FAQ</a>
-            <a href="https://github.com/gokulnair2001/Velum" target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a href="https://app.youform.com/forms/qxrxlzlp" target="_blank" class="nav-cta">Join Waitlist →</a>
+            <a href="https://app.youform.com/forms/qxrxlzlp" target="_blank">Waitlist</a>
+            <a href="https://github.com/gokulnair2001/Velum" target="_blank" rel="noopener noreferrer" class="nav-cta">GitHub →</a>
         </div>
     </nav>
 
     <!-- ─── HERO ─── -->
     <section class="hero">
-        <div class="hero-badge"><span class="dot"></span> Product Healing Agent</div>
+        <div class="hero-badge"><span class="dot"></span> Open Source · MIT License · <span class="version-tag">v0.2.0</span></div>
         <h1 class="hero-title">
-            Your analytics show <span class="dim">what happened.</span><br>
-            Velum shows <span class="accent">what to heal first.</span>
+            An 8-layer engine that turns <span class="dim">raw events</span><br>
+            into <span class="accent">named friction patterns.</span>
         </h1>
         <p class="hero-subtitle">
-            Velum sits on top of your existing analytics stack, turns raw events into named friction patterns,
-            and returns prioritized product and UX recommendations.
+            Velum takes raw JSON event streams and returns structured friction patterns with confidence scores
+            and AI-generated hypotheses. Schema-free. One POST endpoint. Self-host in minutes.
         </p>
-        <div class="hero-actions">
-            <a href="https://app.youform.com/forms/qxrxlzlp" target="_blank" class="btn-primary">Join Waitlist</a>
-            <a href="https://github.com/gokulnair2001/Velum" target="_blank" rel="noopener noreferrer" class="btn-ghost">View on GitHub →</a>
+
+        <div class="hero-terminal">
+            <div class="hero-terminal-header">
+                <span class="hero-terminal-dot"></span>
+                <span class="hero-terminal-title">POST /api/v1/analyze → response</span>
+            </div>
+            <div class="hero-terminal-body">
+<span class="ht-prompt">$</span> <span class="ht-cmd">curl -X POST http://localhost:8080/api/v1/analyze \</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ht-cmd">-d '{"events": [...]}'</span><br>
+<br>
+{<br>
+&nbsp;&nbsp;<span class="ht-key">"patterns"</span>: [{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ht-key">"type"</span>: <span class="ht-str">"retry_storm"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ht-key">"severity"</span>: <span class="ht-critical">"critical"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ht-key">"confidence"</span>: <span class="ht-num">0.96</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ht-key">"affected_users"</span>: <span class="ht-num">847</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ht-key">"hypothesis"</span>: <span class="ht-str">"2.3s btn_pay latency — no loading state visible"</span><br>
+&nbsp;&nbsp;}],<br>
+&nbsp;&nbsp;<span class="ht-key">"status"</span>: <span class="ht-ok">"ok"</span><br>
+}
+            </div>
         </div>
-        <p class="hero-note">Self-hosted or cloud &nbsp;·&nbsp; One API call &nbsp;·&nbsp; AI-powered summaries &nbsp;·&nbsp; Agent-ready</p>
+
+        <div class="hero-actions">
+            <a href="https://github.com/gokulnair2001/Velum" target="_blank" rel="noopener noreferrer" class="btn-primary">View on GitHub →</a>
+            <a href="https://app.youform.com/forms/qxrxlzlp" target="_blank" class="btn-ghost">Join Waitlist</a>
+        </div>
+        <p class="hero-note">MIT License &nbsp;·&nbsp; Self-hostable &nbsp;·&nbsp; One POST endpoint &nbsp;·&nbsp; Agent-ready</p>
     </section>
 
     <!-- ─── CHAOS → CLARITY VISUALIZATION ─── -->
@@ -1740,26 +1955,26 @@
         <div class="pain-inner">
             <div class="pain-header reveal">
                 <div class="mono-label">The problem</div>
-                <h2>Your dashboard says "12% drop-off."<br>It never says <em>why.</em></h2>
+                <h2>You're collecting events.<br>You're not <em>extracting patterns</em> from them.</h2>
             </div>
             <div class="pain-grid">
                 <div class="pain-card reveal">
-                    <div class="pain-card-icon">📊</div>
-                    <h3>You have the data</h3>
-                    <p>Millions of events stream through Segment, Amplitude, Mixpanel. You see counts, funnels, conversion rates.</p>
+                    <div class="pain-card-icon">📡</div>
+                    <h3>The events are there</h3>
+                    <p>Raw JSON streaming through your pipeline — Segment, Kafka, direct instrumentation. Hundreds of thousands per day.</p>
                     <div class="pain-example">> checkout_btn_click: 4,231<br>> conversion_rate: 3.2%<br>> avg_session: 4m 12s</div>
                 </div>
                 <div class="pain-card reveal">
-                    <div class="pain-card-icon">🤷</div>
-                    <h3>But not the meaning</h3>
-                    <p>Why did 847 users click "Pay" four times? Why do mobile users pause for 30 seconds at pricing? Numbers alone can't tell you.</p>
-                    <div class="pain-example">> "Let's A/B test it"<br>> "Maybe it's a bug?"<br>> "Can we look at the logs?"</div>
+                    <div class="pain-card-icon">🔍</div>
+                    <h3>But streams don't self-analyze</h3>
+                    <p>Retry storms, confusion loops, silent drop-offs — they're encoded in the event sequence. Writing detection logic for each one doesn't scale.</p>
+                    <div class="pain-example">> custom query #1: retry detection<br>> custom query #2: loop detection<br>> custom query #47: ...</div>
                 </div>
                 <div class="pain-card reveal">
                     <div class="pain-card-icon">🔥</div>
-                    <h3>So you guess</h3>
-                    <p>Teams build hypotheses based on vibes. Engineers dig through logs. PMs schedule research. Weeks pass. Money leaks.</p>
-                    <div class="pain-example">> Time to diagnosis: 2-4 weeks<br>> Cost of inaction: $47K/month<br>> Root cause found: rarely</div>
+                    <h3>So someone writes a one-off script</h3>
+                    <p>An engineer queries the logs. The pattern recurs next sprint. No one connects the dots. The same friction ships again.</p>
+                    <div class="pain-example">> Time to diagnosis: 2-4 weeks<br>> Pattern recurrence: every release<br>> Root cause found: rarely</div>
                 </div>
             </div>
         </div>
@@ -1905,7 +2120,7 @@
             </div>
 
             <div class="compare-bottom reveal">
-                <p>Velum doesn't replace your analytics stack — it <strong>complements it</strong>.<br>Feed it the same events you already track. Get back the <em>why</em> behind every metric.</p>
+                <p>Velum runs alongside your existing stack — it doesn't replace it.<br>Feed it the same events you already track. Get back <strong>structured patterns and root cause hypotheses</strong>, not just counts.</p>
             </div>
         </div>
     </section>
@@ -1977,72 +2192,127 @@
 
             <!-- Big bold statement -->
             <div class="agentic-statement reveal">
-                <div class="mono-label">Agent-Ready</div>
+                <div class="mono-label">API-First</div>
                 <h2 class="agentic-tagline">
                     One endpoint.<br>
                     <span class="accent">Every</span> <span class="dim">agent.</span>
                 </h2>
-                <p class="agentic-sub">Your AI agent sends events, Velum returns structured friction patterns and healing hypotheses. The agent decides what to do next.</p>
+                <p class="agentic-sub">Your AI agent POSTs events. Velum returns structured friction patterns, confidence scores, and AI hypotheses as JSON. The agent decides what to do next.</p>
             </div>
 
             <!-- 3-step flow -->
             <div class="agent-flow reveal">
+
+                <!-- Step 1: Agent sends events -->
                 <div class="agent-step">
                     <div class="agent-step-num">Step 1</div>
-                    <div class="agent-step-icon">🤖</div>
-                    <div class="agent-step-title">Agent calls</div>
-                    <div class="agent-step-desc">Your agent sends raw product events to Velum via HTTP POST.</div>
-                    <div class="agent-step-code">POST /api/v1/analyze</div>
+                    <div class="agent-step-title">Your Agent</div>
+                    <div class="agent-step-desc">POST raw event batches over HTTP. No SDK, no schema — any JSON works.</div>
+                    <div class="agent-code-block">
+resp = requests.<span class="acb-fn">post</span>(<br>
+&nbsp;&nbsp;<span class="acb-str">"/api/v1/analyze"</span>,<br>
+&nbsp;&nbsp;json={<span class="acb-key">"events"</span>: batch}<br>
+)<br>
+<span class="acb-dim"># → 200 OK, patterns inside</span>
+                    </div>
                 </div>
 
+                <!-- Arrow 1 -->
                 <div class="agent-arrow">
+                    <div class="agent-arrow-label">events</div>
                     <div class="agent-arrow-line"></div>
                     <span class="agent-arrow-tip">→</span>
                 </div>
 
+                <!-- Step 2: Velum (dominant center) -->
                 <div class="agent-step velum-step">
                     <div class="agent-step-num">Step 2</div>
-                    <div class="agent-step-icon" style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--orange);">v_</div>
-                    <div class="agent-step-title">Velum analyzes</div>
-                    <div class="agent-step-desc">8-layer pipeline detects retry storms, confusion loops, silent abandonment, and more — returns structured JSON.</div>
-                    <div class="agent-step-code">severity: 0.96 · 847 users</div>
+                    <div class="velum-mark">v_</div>
+                    <div class="agent-step-title">Velum Analyzes</div>
+                    <div class="agent-step-desc">8-layer deterministic pipeline. Pattern detection, confidence scoring, AI hypothesis generation — all in one call.</div>
+                    <div class="p-tick-row">
+                        <span class="p-tick on"></span>
+                        <span class="p-tick on"></span>
+                        <span class="p-tick on"></span>
+                        <span class="p-tick on"></span>
+                        <span class="p-tick on"></span>
+                        <span class="p-tick on"></span>
+                        <span class="p-tick on"></span>
+                        <span class="p-tick on"></span>
+                    </div>
+                    <div class="velum-stat-row">8 layers &nbsp;·&nbsp; &lt; 200ms &nbsp;·&nbsp; structured JSON</div>
                 </div>
 
+                <!-- Arrow 2 -->
                 <div class="agent-arrow">
+                    <div class="agent-arrow-label">patterns</div>
                     <div class="agent-arrow-line"></div>
                     <span class="agent-arrow-tip">→</span>
                 </div>
 
+                <!-- Step 3: Agent acts on response -->
                 <div class="agent-step">
                     <div class="agent-step-num">Step 3</div>
-                    <div class="agent-step-icon">⚡</div>
-                    <div class="agent-step-title">Agent acts</div>
-                    <div class="agent-step-desc">Parse the JSON, make decisions. File tickets, trigger alerts, toggle feature flags — automatically.</div>
-                    <div class="agent-step-code">create_ticket(pattern)</div>
+                    <div class="agent-step-title">Agent Acts</div>
+                    <div class="agent-step-desc">Parse the response. Route by severity. Trigger your downstream systems automatically.</div>
+                    <div class="agent-code-block">
+p = resp[<span class="acb-key">"patterns"</span>][<span class="acb-num">0</span>]<br>
+<span class="acb-dim"># severity: critical, users: 847</span><br>
+<span class="acb-fn">if</span> p[<span class="acb-key">"severity"</span>] == <span class="acb-crit">"critical"</span>:<br>
+&nbsp;&nbsp;jira.<span class="acb-fn">create</span>(p)
+                    </div>
                 </div>
             </div>
 
-            <!-- What agents can do — compact outcome cards -->
+            <!-- What agents can do — enriched outcome cards -->
             <div class="agent-outcomes reveal">
                 <div class="agent-outcome">
+                    <div class="agent-outcome-bar bar-blue"></div>
                     <div class="agent-outcome-icon">🎫</div>
                     <div class="agent-outcome-name">File Tickets</div>
                     <div class="agent-outcome-tools">jira · linear · github</div>
+                    <div class="agent-outcome-code">
+jira.create_issue({<br>
+&nbsp;&nbsp;<span class="acb-key">"type"</span>: <span class="acb-str">"retry_storm"</span>,<br>
+&nbsp;&nbsp;<span class="acb-key">"sev"</span>: <span class="acb-crit">"critical"</span><br>
+})
+                    </div>
                 </div>
                 <div class="agent-outcome">
+                    <div class="agent-outcome-bar bar-green"></div>
                     <div class="agent-outcome-icon">🚨</div>
                     <div class="agent-outcome-name">Trigger Alerts</div>
                     <div class="agent-outcome-tools">slack · pagerduty · opsgenie</div>
+                    <div class="agent-outcome-code">
+slack.post({<br>
+&nbsp;&nbsp;<span class="acb-key">"text"</span>: <span class="acb-str">"847 users affected"</span>,<br>
+&nbsp;&nbsp;<span class="acb-key">"channel"</span>: <span class="acb-str">"#oncall"</span><br>
+})
+                    </div>
                 </div>
                 <div class="agent-outcome">
+                    <div class="agent-outcome-bar bar-yellow"></div>
                     <div class="agent-outcome-icon">🎛</div>
                     <div class="agent-outcome-name">Toggle Features</div>
-                    <div class="agent-outcome-tools">launchdarkly · flags</div>
+                    <div class="agent-outcome-tools">launchdarkly · split · flags</div>
+                    <div class="agent-outcome-code">
+ld.toggle({<br>
+&nbsp;&nbsp;<span class="acb-key">"flag"</span>: <span class="acb-str">"checkout_v2"</span>,<br>
+&nbsp;&nbsp;<span class="acb-key">"enabled"</span>: <span class="acb-ok">true</span><br>
+})
+                    </div>
                 </div>
                 <div class="agent-outcome">
+                    <div class="agent-outcome-bar bar-orange"></div>
                     <div class="agent-outcome-icon">📊</div>
                     <div class="agent-outcome-name">Feed Dashboards</div>
-                    <div class="agent-outcome-tools">grafana · datadog</div>
+                    <div class="agent-outcome-tools">grafana · datadog · prometheus</div>
+                    <div class="agent-outcome-code">
+metrics.push({<br>
+&nbsp;&nbsp;<span class="acb-key">"pattern"</span>: <span class="acb-str">"retry_storm"</span>,<br>
+&nbsp;&nbsp;<span class="acb-key">"confidence"</span>: <span class="acb-num">0.96</span><br>
+})
+                    </div>
                 </div>
             </div>
 
@@ -2122,13 +2392,13 @@
     <section class="cta-section" id="waitlist">
         <div class="cta-content">
             <div class="cta-label">Open Source</div>
-            <h2 class="cta-title">Stop guessing.<br>Start healing.</h2>
-            <p class="cta-desc">Send the same events you already collect. Get back the hidden friction patterns and what to fix first.</p>
+            <h2 class="cta-title">Deploy it.<br>Own your data.</h2>
+            <p class="cta-desc">Clone the repo, run the binary, point it at your event stream. MIT licensed. No vendor lock-in. Full source access.</p>
             <div class="cta-buttons">
-                <a href="https://app.youform.com/forms/qxrxlzlp" target="_blank" class="btn-primary">Join Waitlist</a>
-                <a href="https://github.com/gokulnair2001/Velum" target="_blank" rel="noopener noreferrer" class="btn-ghost">View on GitHub →</a>
+                <a href="https://github.com/gokulnair2001/Velum" target="_blank" rel="noopener noreferrer" class="btn-primary">View on GitHub →</a>
+                <a href="https://app.youform.com/forms/qxrxlzlp" target="_blank" class="btn-ghost">Join Waitlist</a>
             </div>
-            <p class="cta-note">Free during beta &nbsp;·&nbsp; Direct onboarding support &nbsp;·&nbsp; Shape the roadmap</p>
+            <p class="cta-note">MIT License &nbsp;·&nbsp; Self-hosted by default &nbsp;·&nbsp; No vendor lock-in</p>
         </div>
     </section>
 
@@ -2168,6 +2438,18 @@
             if (!cursorVisible) { cursor.style.opacity = '1'; cursorVisible = true; }
         });
         document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; cursorVisible = false; });
+
+        // Fetch latest version from GitHub releases
+        fetch('https://api.github.com/repos/gokulnair2001/Velum/releases/latest')
+            .then(r => r.json())
+            .then(data => {
+                if (data.tag_name) {
+                    document.querySelectorAll('.version-tag').forEach(el => {
+                        el.textContent = data.tag_name;
+                    });
+                }
+            })
+            .catch(() => { /* silently keep fallback v0.2.0 */ });
 
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
